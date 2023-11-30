@@ -1,0 +1,29 @@
+Thumb      Index      Middle     Ring
+
+T I M R    I T M R    M T I R    R T I M
+
+T I R M    I T R M    M T R I    R T M I
+
+T M I R    I M T R    M I T R    R I T M
+
+T M R I    I M R T    M I R T    R I M P
+
+T R M I    I R T M    M R T I    R M T I
+
+T R I M    I R M T    M R I T    R M R T
+
+
+
+
+(based on PIMA, but using the English finger names)
+
+Week 1: Thumb leading
+Week 2: Index leading
+Week 3: Middle leading
+Week 4: Ring leading
+
+Day 1: G C D C  G C D C  G C D C   G
+Day 2: C G Am F  C G Am F  C G Am F  C
+Day 3: Am D G G  Am D G G  Am D G G  Am
+Day 4: G C G C  Em Am Em Am  G C G C  G
+Day 5: Anything
