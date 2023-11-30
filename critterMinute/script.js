@@ -198,6 +198,7 @@ function loadImages() {
       }
     });
   });
+  console.log(images);
   
   waitLoad();
 }
@@ -299,7 +300,3 @@ function drawCritter(critter, boxSize) {
 
 }
 
-
-setTimeout(function() {
-  start();
-}, 400)
