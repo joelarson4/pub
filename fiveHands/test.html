@@ -1,0 +1,261 @@
+<html>
+<head>
+<script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>  
+<script src="node_modules/pokersolver/pokersolver.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Mulish&display=swap" rel="stylesheet">  
+<script>
+  function log(text) { console.log(text); }
+
+  var ranks = {
+    'A': ' A',
+    '2': ' 2',
+    '3': ' 3',
+    '4': ' 4',
+    '5': ' 5',
+    '6': ' 6',
+    '7': ' 7',
+    '8': ' 8',
+    '9': ' 9',
+    'T': '10',
+    'J': ' J',
+    'Q': ' Q',
+    'K': ' K'
+  }
+
+  var suits = {
+    d: '♦️',
+    h: '♥️',
+    s: '♠️',
+    c: '♣️'
+  }
+
+  var scores = {
+    'Royal Flush': 10,
+    'Straight Flush': 9,
+    'Four of a Kind': 8,
+    'Full House': 7,
+    'Flush': 6,
+    'Straight': 5,
+    'Three of a Kind': 4,
+    'Two Pair': 3,
+    'Pair': 2,
+    'High Card': 1,
+  }
+
+  $(function() {
+    $.getJSON('./data.json') .done(function( data ) {
+      var rowWidth = 5;
+
+      var hands = [];
+
+      var html = [''];
+      data.deal.forEach(function(card, index) {
+        /*if(index % rowWidth == 0) {
+          if(index > 0) {
+            html.push('</div>');
+          }
+          html.push('<div class="row">');
+        }*/
+        var chunks = card.split('');
+        var rank = ranks[chunks[0]];
+        var suit = suits[chunks[1]];
+        html.push(`<div class="card" data-card="${card}"><span class="rank">${rank}</span><br/><span class="suit">${suit}</span></div>`);
+      })
+
+      $('#deal').html(html.join('\n'));
+
+      $('.card').on('click', function() {
+        var this$ = $(this);
+        if(this$.hasClass('chosen')) return;
+
+        this$.toggleClass('selected');
+
+        var selected = $('.selected');
+        if(selected.length == 5) {
+          setTimeout(function() {
+            handChosen(selected);
+          }, 500);
+        }
+      });
+
+      function scoreHand(hand) {
+        var handResult = Hand.solve(hand);
+        handResult.score = handResult.rank;
+        if(handResult.rank == 9) {
+          if(hand.join().indexOf('A') > -1) {
+            handResult.score = 10;
+          }
+        }
+        return handResult;
+      }
+
+      var ended = false;
+      function autoEnd() {
+        if(ended) return;
+        ended = true;
+        $('#deal .card').addClass('selected');
+        handChosen($('.selected'));
+      }
+
+      function handChosen(selected) {
+        var hand = selected.toArray().map(function(ele) { return ele.getAttribute('data-card'); });
+        selected.animate({opacity: 0 },function() {
+          selected.remove();
+          if($('#deal .card').length == 5) {
+            autoEnd();
+          }
+        });
+
+        var handResult = scoreHand(hand);
+        var html = [`<div class="row"><h2><span class="points">${handResult.score}p</span> ${handResult.descr}</h2>`];
+        hand.sort();
+        hand.reverse();
+        hand.forEach(function(card, index) {
+          var chunks = card.split('');
+          var rank = ranks[chunks[0]];
+          var suit = suits[chunks[1]];
+          html.push(`<div class="card" data-card="${card}"><span class="rank">${rank}</span><br/><span class="suit">${suit}</span></div>`);
+        })
+        html.push('</div>');
+        //log(html)
+
+        $('#picks').append(html.join('\n'));
+      }
+
+
+    });
+  });
+</script>
+<style>
+body {
+  font-family: Mulish, sans-serif;
+}
+
+.table {
+  background: green;
+  padding: 2em;
+  box-sizing: border-box;
+  border: 5px solid darkgreen;
+  border-radius: 5px;
+  height: 1500px;
+  width: 480px;
+  margin: 10px;
+  padding: 20px;
+}
+
+#picks {
+  padding: 0 60px;
+}
+
+#divider {
+  margin-bottom: 24px;
+  clear: both;
+  height: 20px;
+  border-bottom: 4px solid darkgreen;
+}
+
+.row {
+  clear: both;
+  display: block;
+  float: none;
+  font-size: 10pt;
+}
+
+#picks .row {
+  height: 110px;
+}
+
+.row h2 {
+  margin: 0px 10px 0px 10px;
+}
+.row h2 .points {
+  color: yellow;
+  margin-right: 6px;
+} 
+#picks .card {
+  box-shadow: 0 2px 2px rgba(0,0,0,0.5);
+}
+
+.card {
+  float: left;
+  box-sizing: border-box;
+  cursor: pointer;
+  background: white;
+  margin: 10px;
+  height: 88px;
+  width: 63px;
+  border: 2px solid lightgrey;
+  box-shadow: 0 3px 3px rgba(0,0,0,0.8);
+  border-radius: 5px;
+  text-align: center;
+  font-size: 25pt;
+  font-family: Abril Fatface, serif;
+  padding-top: 2px;
+}
+
+.card.selected {
+  box-shadow: 0 0 20px yellow, inset 0 0 20px cyan;
+  border: 2px solid blue;
+}
+
+#picks .card {
+  margin: 7px;
+  height: 66px;
+  width: 48px;
+  font-size: 18px;
+}
+
+.suit {
+  font-size: 20pt;
+}
+
+#picks .suit {
+  font-size: 15pt;
+}
+
+#legend .points {
+  width: 85px;
+  text-align: right;
+  display: inline-block;
+}
+h1 {
+  font-family:  Abril Fatface, serif;;
+  text-align: center;
+  color: yellow;
+  text-shadow: 0 2px 1px rgba(0,0,0,0.8);
+  margin: 0;
+
+}
+
+</style>
+</head>
+<body>
+  <div class="table">
+    <h1>Five Hands</h1>
+    <div id="deal"></div>
+    <div id="divider"></div>
+    <div id="picks"></div>
+    <div id="divider"></div>
+
+<div id="legend">
+
+<div class="row"><h2 class="hand"><span class="points">10p</span><span class="desc">Royal Flush</span></h2> </div>
+<div class="row"><h2 class="hand"><span class="points">9p</span><span class="desc">Straight Flush</span></h2> </div>
+<div class="row"><h2 class="hand"><span class="points">8p</span><span class="desc">Four of a Kind</span></h2> </div>
+<div class="row"><h2 class="hand"><span class="points">7p</span><span class="desc">Full House</span></h2> </div>
+<div class="row"><h2 class="hand"><span class="points">6p</span><span class="desc">Flush</span></h2> </div>
+<div class="row"><h2 class="hand"><span class="points">5p</span><span class="desc">Straight</span></h2> </div>
+<div class="row"><h2 class="hand"><span class="points">4p</span><span class="desc">Three of a Kind</span></h2> </div>
+<div class="row"><h2 class="hand"><span class="points">3p</span><span class="desc">Two Pair</span></h2> </div>
+<div class="row"><h2 class="hand"><span class="points">2p</span><span class="desc">Pair</span></h2> </div>
+<div class="row"><h2 class="hand"><span class="points">1p</span><span class="desc">High Card</span></h2> </div>
+</div>
+  </div>
+
+</body>
+</html>
