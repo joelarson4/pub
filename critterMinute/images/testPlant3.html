@@ -1,0 +1,86 @@
+<button id="first" onclick="show(this)">h,0</button>
+<button onclick="show(this)">h,1</button>
+<button onclick="show(this)">h,2</button>
+<button onclick="show(this)">h,3</button>
+<button onclick="show(this)">h,4</button>
+<button onclick="show(this)">h,5</button>
+<button onclick="show(this)">h,6</button>
+<button onclick="show(this)">h,7</button>
+<button onclick="show(this)">h,8</button>
+<button onclick="show(this)">h,9</button>
+<button onclick="show(this)">h,10</button>
+<button onclick="show(this)">h,11</button>
+<button onclick="show(this)">h,12</button>
+<button onclick="show(this)">h,13</button>
+<button onclick="show(this)">h,14</button>
+<button onclick="show(this)">h,15</button>
+<button onclick="show(this)">b,0</button>
+<button onclick="show(this)">b,1</button>
+<button onclick="show(this)">b,2</button>
+<button onclick="show(this)">b,3</button>
+<button onclick="show(this)">b,4</button>
+<button onclick="show(this)">b,5</button>
+<button onclick="show(this)">b,6</button>
+<button onclick="show(this)">b,7</button>
+<button onclick="show(this)">b,8</button>
+<button onclick="show(this)">b,9</button>
+<button onclick="show(this)">b,10</button>
+<button onclick="show(this)">b,11</button>
+<button onclick="show(this)">b,12</button>
+<button onclick="show(this)">b,13</button>
+<button onclick="show(this)">b,14</button>
+<button onclick="show(this)">b,15</button><br>
+<button onclick="show(this)">r,0</button>
+<button onclick="show(this)">r,1</button>
+<button onclick="show(this)">r,2</button>
+<button onclick="show(this)">r,3</button>
+<button onclick="show(this)">r,4</button>
+<button onclick="show(this)">r,5</button>
+<button onclick="show(this)">r,6</button>
+<button onclick="show(this)">r,7</button>
+<button onclick="show(this)">r,8</button>
+<button onclick="show(this)">r,9</button>
+<button onclick="show(this)">r,10</button>
+<button onclick="show(this)">r,11</button>
+<button onclick="show(this)">r,12</button>
+<button onclick="show(this)">r,13</button>
+<button onclick="show(this)">r,14</button>
+<button onclick="show(this)">r,15</button>
+
+
+<style>
+body { width: 2000px;}
+div { float: left; margin: 1em;}
+img { width: 200px; height: 100px; }
+img.pt { width: 200px; height: 50px; }
+</style>
+
+<div id="out"></div>
+
+<script>
+
+    function show(e) {
+        var out = document.getElementById('out');
+        var type = e.innerHTML.split(',')[0];
+        var val = e.innerHTML.split(',')[1];
+        out.innerHTML = '';
+        for(var i = 0; i < 16; i++) {
+            var h = ( type == 'h' ? val : i );
+            var b = ( type == 'b' ? val : i);
+            var r = ( type == 'r' ? val : i);
+            add(out,h,b,r);
+        }
+    }
+
+
+    function add(out,h,b,r) {
+        out.innerHTML += 
+            '<div>' + 
+            '<img id="ch' + Math.random() + '" class="pf" src="pf' + h + '-big.png"><br>' +
+            '<img id="cb' + Math.random() + '" class="pt" src="pt' + b + '-big.png"><br>' +
+            '<img id="cr' + Math.random() + '" class="pr" src="pr' + r + '-big.png"><br>';
+    }
+
+    show(document.getElementById('first'));
+
+</script>

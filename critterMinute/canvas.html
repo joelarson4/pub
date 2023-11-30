@@ -1,0 +1,48 @@
+<html><head>
+</head><body>
+<canvas id="canvas" style="background:lightblue;" width=830 height=1660></canvas>
+<script>
+var img1 = new Image, img2 = new Image, cnt = 2,
+    canvas = document.getElementById("canvas"),
+    ctx = canvas.getContext("2d");
+
+// image loading for demo (ignore)
+img1.onload = img2.onload = function() {if (!--cnt) go()};
+img1.src = "images/cb7-big.png";       
+img2.src = "images/cb1-big.png";
+
+// MAIN CODE ---
+function go() {
+
+  // create a pattern  
+  ctx.fillStyle = 'pink';
+  
+  // fill canvas with pattern
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  for(var x = 0; x < 3; x++) {
+    for(var y = 0; y < 3; y++) {
+      var size = Math.random() * 50 + 125;
+      ctx.beginPath();
+      ctx.ellipse(Math.random() * 400 + x * 400, Math.random() * 300 + y * 300, size, size, Math.PI / 4, 0, 2 * Math.PI);
+      ctx.fillStyle = 'salmon';
+      ctx.fill();
+    }
+  }
+
+  // use blending mode multiply
+  ctx.globalCompositeOperation = "multiply";
+  
+  // draw sofa on top
+  ctx.drawImage(img1, 0, 0, img1.width, img1.height);
+  
+  // change composition mode
+  ctx.globalCompositeOperation = "destination-in";
+  
+  // draw to cut-out sofa
+  ctx.drawImage(img1, 0, 0, img1.width, img1.height);
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+
+
+<style>
+body { width: 2000px;}
+td { padding: 5px;}
+img { margin-left: 2em; width: 75px; height: 150px; border: 1px solid #ddd; }
+.small { font-size: 12px; }
+</style>
+
+<div id="out"></div>
+
+<script>
+
+    var biome = {
+        0: "jungle",
+        1: "forest",
+        2: "woodland",
+        3: "savanah",
+        4: "tundra",
+        5: "plains",
+        6: "stone desert",
+        7: "sand desert",
+        8: "mountain",
+        9: "seashore",
+        10: "swamp",
+        11: "lake shore",
+        12: "ice field",
+        13: "mist field",
+        14: "lava field",
+        15: "lightning field"
+    };
+
+    function go() {
+        var biohtm = [];
+        for(var i = 0; i < 16; i++) {
+            biohtm.push('<br>___ ' + biome[i]);
+        }
+        biohtm.splice(8,0,'</td><td class="small">');
+        biohtm = biohtm.join('');
+
+        var outele = document.getElementById('out');
+        var outhtm = ['<table cellpadding=0 cellspacing = 0>'];
+        for(var i = 0; i < 16; i++) {
+            outhtm.push('<tr>');
+            ['h','b','r'].forEach(function(typ) {            
+                outhtm.push( 
+                    '<td>' +
+                    '<img src="images/scanned/c' + typ + i + '.png">' +
+                    '</td><td>' + typ + i +
+                    '</td><td class="small">' + biohtm +
+                    '</td>');
+            });
+            outhtm.push('</tr>');
+        }
+        outhtm.push('</table>');
+        outele.innerHTML = outhtm.join('');
+    }
+
+
+
+    go();
+</script>

@@ -1,0 +1,23 @@
+
+<style>
+img { width: 50px; height: 100px; }
+</style>
+
+<script>
+
+    function shift(id, name) {
+        document.getElementById(id).setAttribute('src', name + Math.floor(Math.random() * 16) + '.png');
+    }
+
+setTimeout(function() {
+    function add() {
+        document.body.innerHTML += 
+            '<img id="ch' + Math.random() + '" src="ch' + Math.floor(Math.random() * 16) + '.png" onclick="shift(this.id, \'ch\');">' +
+            '<img id="cb' + Math.random() + '" src="cb' + Math.floor(Math.random() * 16) + '.png" onclick="shift(this.id, \'cb\');">' +
+            '<img id="cr' + Math.random() + '" src="cr' + Math.floor(Math.random() * 16) + '.png" onclick="shift(this.id, \'cr\');">&nbsp;&nbsp;';
+    }
+    for(var i = 0; i < 96; i++) {
+        add();
+    }
+}, 100);
+</script>

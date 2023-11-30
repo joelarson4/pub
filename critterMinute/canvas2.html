@@ -1,0 +1,128 @@
+<html><head>
+</head><body style="background:lightblue;">
+<canvas id="canvas" width=1245 height=830 style="background: lightgreen;"></canvas>
+<script>
+function log(text) {
+  console.log(text)
+}
+
+function rand(max, min) {
+  return Math.floor(max * Math.random() + (min || 0));
+}
+
+var images = { };
+function loadImages() {
+  ['','-flip'].forEach(function(flip) { 
+    ['h','b','r'].forEach(function(seg) {
+      for(var i = 0; i < 16; i++) {
+        images['c' + seg + i + flip] = new Image;
+        images['c' + seg + i + flip].onerror = function() { this.src = this.src + '?' + Date.now(); }
+        images['c' + seg + i + flip].onload = function() { this.loaded = true; }
+        images['c' + seg + i + flip].src = 'images/c' + seg + i + flip + '-big.png';
+      }
+    });
+  });
+
+  ['','-flip'].forEach(function(flip) { 
+    ['L','R'].forEach(function(eye) {
+      for(var i = 0; i < 10; i++) {
+        images['ce' + eye + i + flip] = new Image;
+        images['ce' + eye + i + flip].onerror = function() { this.src = this.src + '?' + Date.now(); }
+        images['ce' + eye + i + flip].onload = function() { this.loaded = true; }
+        images['ce' + eye + i + flip].src = 'images/ce' + eye + i + flip + '-big.png';
+      }
+    });
+  });
+  
+  waitLoad();
+}
+
+function waitLoad() {
+  for(var i in images) {
+    if(images[i].onload && !images[i].loaded) {
+      return setTimeout(function() { waitLoad(); }, 200);
+    }
+  }
+  drawCritter('canvas', ['ch' + rand(10),'cb' + rand(10),'cr' + rand(10)]);
+}
+
+loadImages();
+
+function isOpaque(context, x, y) { // x, y coordinate of pixel
+  return context.getImageData(x, y, 1, 1).data[3] > 0; // 4th byte is alpha
+}
+
+function bottomPixel(canvas, context) {
+  for(var y = canvas.height - 1; y > 0; y--) {
+    for(var x = canvas.width - 1; x > 0; x--) {
+      if(isOpaque(context, x, y)) {
+        return y;
+      }
+    }
+  }
+}
+function drawCritter(id, segs) {
+  var canvas = document.getElementById(id);
+  var critterCanvas = document.createElement('canvas');
+  critterCanvas.height = canvas.height;
+  critterCanvas.width = canvas.width;
+
+  //var canvas = document.getElementById(id);
+  var critterContext = critterCanvas.getContext("2d", {willReadFrequently: true});
+  
+  critterContext.globalCompositeOperation = "multiply";
+
+  var scale = critterCanvas.height / images[segs[0]].height;
+
+  segs.forEach(function(seg, index) {
+    critterContext.drawImage(images[seg], Math.floor(images[seg].width * scale * index), 0, images[seg].width * scale, images[seg].height * scale);
+
+    log(images[seg].width * scale * index)
+  });
+
+  var yOffs = critterCanvas.height - bottomPixel(critterCanvas, critterContext);
+
+  //var yOffs = bodyBottoms[segs[1]] * critterCanvas.height;
+  //log(yOffs)
+
+  var destinationImage = new Image();
+  destinationImage.onload = function(){
+    var canvasContext = canvas.getContext("2d");
+
+    var color = [rand(360),rand(35) + 65,rand(25)+75];
+    canvasContext.fillStyle = `hsl(${color[0]},${color[1]}%,${color[2]}%)`;
+    canvasContext.fillRect(0, yOffs, canvas.width, canvas.height);
+
+    canvasContext.globalCompositeOperation = "multiply";
+    canvasContext.drawImage(destinationImage, 0, yOffs, critterCanvas.width, critterCanvas.height);
+ 
+    canvasContext.globalCompositeOperation = "destination-in";
+    canvasContext.drawImage(destinationImage, 0, yOffs, critterCanvas.width, critterCanvas.height)
+
+    canvasContext.globalCompositeOperation = "source-over";
+    var leye = rand(10);
+    var reye = leye; if(rand(5) == 0) reye = rand(10);
+    while(leye==5 || reye==5) {//TODO WTF
+      leye = rand(10);
+      reye = leye; if(rand(5) == 0) reye = rand(10);
+
+    }
+
+    var offs = [rand(40), rand(40), rand(40), rand(40)];
+    var leyeX = 680 - images['ceL' + leye].width - offs[0];
+    var leyeY = 460 + offs[2] - 10;
+    var reyeX = 680 + offs[2];
+    var reyeY = 460 + offs[3] - 10;
+    log([leyeX,leyeX * scale])
+    canvasContext.drawImage(images['ceL' + leye], leyeX * scale, leyeY * scale + yOffs, images['ceL' + leye].width * scale, images['ceL' + leye].height * scale);
+    canvasContext.drawImage(images['ceR' + reye], reyeX * scale, reyeY * scale + yOffs, images['ceR' + reye].width * scale, images['ceR' + reye].height * scale);
+    
+    //canvasContext.drawImage(images['ceR6.png'], 450,400);
+  };
+  destinationImage.src = critterCanvas.toDataURL();
+
+}
+
+</script>
+</body>
+</html>

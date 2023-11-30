@@ -1,0 +1,50 @@
+<html>
+<head>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Lato&display=swap" rel="stylesheet">
+
+  <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"></script>
+  <script>
+    var ts = Date.now();
+    var html =
+      '<link rel="stylesheet"  href="style.css?ts=' + ts + '"></link>' +
+      '<script src="script.js?ts=' + ts + '"></' + 'script>';
+    console.log(html)
+    document.writeln(html);
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <div class="wrapper">
+    <div class="heading">
+        <h1>Critter Minute</h1>
+        <div class="stats">
+            <div class="level"></div>
+            <div class="instruction"></div>
+            <div class="time"></div>
+        </div>
+    </div>
+    <div class="body"><div class="help">
+      <h2>Instructions</h2>
+      <p>Your objective: find as many twins as you can in 5 minutes.</p>
+      <ul>
+        <li>Find the twins.</li>
+        <li>Ignore which direction the critter is facing.</li>
+        <li>To select or unselect a critter, click it.</li>
+        <li>Then, click it's twin.</li>
+        <li>Once you find the twin, you advance to the next level.</li>
+      </ul>
+      <p>Good luck!</p>
+      <button id="start" onclick="start()" style="display:none;">► GO ►</button>
+    </div></div>
+    <div class="footer">
+  </div>
+
+
+</body>
+</html>
