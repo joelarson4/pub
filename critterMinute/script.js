@@ -3,8 +3,6 @@
 //baseline from feet!
 //eyes are not positioned quite identically on flip
 
-var level = 0;
-
 function log(text) {
   console.log(text);
 }
@@ -13,13 +11,44 @@ function rand(max, min) {
   return Math.floor(max * Math.random() + (min || 0));
 }
 
+function SeededRand(seed) {
+  var string = seed.toString();
+  var integer = 0;
+  string.split('').forEach(function(c,i) { integer += string.charCodeAt(i) * i; });
+  this.get = function(max,min) {
+    min = min || 0;
+    integer++;
+    var val = (1+(Math.sin(integer) * 100 + Math.cos(100 - integer) * 50) % 1)%1;
+    return Math.floor((max-min) * val + min);
+  }
+}
+
 function clickCritter(id) {
-  $('.level' + level + '#' + id).toggleClass('critterSelected');
+  $('.level' + board.level + '#' + id).toggleClass('critterSelected');
+
+  var levelData = board.levels[board.level];
+  var selectionTarget = levelData.goal == 'twinPair' ? 4 :
+    levelData.goal == 'triplets' ? 3 : 2;
 
   var selected = $('.critterSelected');
-  if(selected.length == 2) {
-    if(selected[0].getAttribute('data-critter') == selected[1].getAttribute('data-critter')) {
-      level++;
+  if(selected.length == selectionTarget) {
+    var critters = [];
+    selected.toArray().forEach(function(s) {
+      critters.push(s.getAttribute('data-critter'));
+    });
+    critters.sort();
+
+    var confirmed = true;
+    if(levelData.goal == 'twin') {
+      confirmed = critters[0] == critters[1];
+    } else if(levelData.goal == 'triplets') {
+      confirmed = critters[0] == critters[1] && critters[0] == critters[2];
+    } else if(levelData.goal == 'twinPair') {
+      confirmed = critters[0] == critters[1] && critters[2] == critters[3];
+    }
+
+    if(confirmed) {
+      board.level++;
       selected.addClass('confirmed');
       setTimeout(function() {
         nextScreen();
@@ -36,15 +65,9 @@ function clickCritter(id) {
   //nextScreen();
 }
 
-
-function getCritterSegments() {
-  var seg = [ rand(16), rand(16), rand(16) ];
-  return seg;
-}
-
 function getCritterHtml(id, seg, boxSize) {
   var html = '<div class="critter ' +
-    ` level${level}` +
+    ` level${board.level}` +
     `" data-critter="${seg[0]},${seg[1]},${seg[2]}" onclick="clickCritter('${id}')" id="${id}"` +
     `style="width: ${boxSize}px; height: ${boxSize}px;">` +
     `<canvas class="critterInner" width="${boxSize}" height="${boxSize}">` + 
@@ -53,31 +76,20 @@ function getCritterHtml(id, seg, boxSize) {
     //`<img class="segment segment3" src="./images/${images[2]}"/>` +
     //'<img class="eye eyeL" src="./images/ceL' + 4 + '.png"/>' + 
     //'<img class="eye eyeR" src="./images/ceR' + 4 + '.png"/>' + 
-    `</canvas></div>`;
+    '</canvas></div>'// + id + ' ' + seg +'</div>';
   return html;
 }
 
 function nextScreen() {
-  var sizes = [
-    [2,3],
-    [3,4],
-    [3,4],
-    [3,4],
-    [3,4],
-    [3,4],
-    [4,5],
-    [4,5],
-    [5,6]
-  ];
-
-  if(level >= sizes.length) {
+  var levelData = board.levels[board.level];
+  if(!levelData) {
     done();
     return;
   }
 
-  $('.instruction').html('FIND THE TWINS!');
-  var width = sizes[level][0];
-  var height = sizes[level][1];
+  $('.instruction').html('...');
+  var width = levelData.size[0];
+  var height = levelData.size[1];
   var boxSize = ($('.body').width() / width) - (width * 5);
 
   var grid = [];
@@ -85,42 +97,40 @@ function nextScreen() {
     var row = [];
     grid.push(row);
     for(var x = 0; x < width; x++) {
-      row.push(getCritterSegments());
+      row.push(levelData.critters[y * width + x].split('/'));
     }
   }
-
-  var twin1x = rand(width);
-  var twin1y = rand(height);
-  var twin2x = rand(width);
-  var twin2y = rand(height);
-  while(twin2x == twin1x) {
-    twin2x = rand(width);
-  }
-  while(twin2y == twin1y) {
-    twin2y = rand(height);
-  }
-
-  grid[twin2y][twin2x] = [].concat(grid[twin1y][twin1x]);
 
   var out = [];
   var critters = [];
   for(var y = 0; y < height; y++) {
     for(var x = 0; x < width; x++) {
       var id = `critter-${x}-${y}`;
-      critters.push({id: id, segs: grid[y][x] });
+      critters.push({id: id, segs: grid[y][x].slice(0,3), flip: grid[y][x][3] == 1, eyes: grid[y][x].slice(4) });
       out.push(getCritterHtml(id, grid[y][x], boxSize));
     }
     out.push('<br/>');
   }
 
-  $('.level').html('L' + (1 + level));
+  if(board.level == 0) {
+    $('.time').html('-:--');
+  }
+  $('.level').html('L' + (1 + board.level));
   $('.body').html(out.join('\n'));
 
   setTimeout(function() {
     critters.forEach(function(critter) {
       drawCritter(critter, boxSize);
     });
-  }, 100);
+
+    var instructions = {
+      twins: 'FIND THE TWINS',
+      triplets: 'FIND ALL THREE TRIPLETS',
+      twinPair: 'FIND TWO PAIRS OF TWINS',
+    }
+
+    $('.instruction').html(instructions[levelData.goal]);
+  }, 2);
 
 
   setTimeout(function() {
@@ -131,15 +141,16 @@ function nextScreen() {
   }, 300);  
 }
 
-function done(level) {
+function done() {
   $('.level').html('FIN');
   $('.instruction').html('YA DID IT!');
   $('.body').html(`<div class="done">★ NICE! ★<p style="font-size: 30px;">It took you ${gameTime.minutes} minutes, ${gameTime.seconds} seconds</div>`);
 }
 
-var startTime = Date.now();
+var startTime = null;
 var gameTime = null;
 function start() {
+  var startTime = Date.now();
   var tmo = setInterval(function() {
     var secondsRunning = (Date.now() - startTime) / 1000;
     var minutesRunning = Math.floor(secondsRunning / 60);
@@ -151,54 +162,27 @@ function start() {
   nextScreen();
 }
 
-/*
-function start() {
-  var startTime = Date.now();
-  var lengthOfGameSeconds = 5 * 60 + 0.5;
-  var tmo = setInterval(function() {
-    var secondsRunning = (Date.now() - startTime) / 1000;
-    var secondsLeft = lengthOfGameSeconds - secondsRunning;
-    var minutesLeft = Math.floor(secondsLeft / 60);
-    var secondsInMinuteLeft = (100 + (secondsLeft - minutesLeft * 60)).toFixed(0).substring(1);
-    $('.time').html(`${minutesLeft}:${secondsInMinuteLeft}`);
-    if(secondsLeft <= 0) {
-      $('.time').html('0:00');
-      done(level);
-      clearTimeout(tmo);
-    }
-  }, 200);
 
-  nextScreen();
-}*/
-
-
-
-
-
+var board = null;
 var images = { };
 function loadImages() {
-  ['','-flip'].forEach(function(flip) { 
     ['h','b','r'].forEach(function(seg) {
       for(var i = 0; i < 16; i++) {
-        images['c' + seg + i + flip] = new Image;
-        images['c' + seg + i + flip].onerror = function() { this.src = this.src + '?' + Date.now(); }
-        images['c' + seg + i + flip].onload = function() { this.loaded = true; }
-        images['c' + seg + i + flip].src = 'images/c' + seg + i + flip + '-big.png';
+        images['c' + seg + i] = new Image;
+        images['c' + seg + i].onerror = function() { this.src = this.src + '?' + Date.now(); }
+        images['c' + seg + i].onload = function() { this.loaded = true; }
+        images['c' + seg + i].src = 'images/c' + seg + i + '-big.png';
       }
     });
-  });
 
-  ['','-flip'].forEach(function(flip) { 
     ['L','R'].forEach(function(eye) {
       for(var i = 0; i < 10; i++) {
-        images['ce' + eye + i + flip] = new Image;
-        images['ce' + eye + i + flip].onerror = function() { this.src = this.src + '?' + Date.now(); }
-        images['ce' + eye + i + flip].onload = function() { this.loaded = true; }
-        images['ce' + eye + i + flip].src = 'images/ce' + eye + i + flip + '-big.png';
+        images['ce' + eye + i] = new Image;
+        images['ce' + eye + i].onerror = function() { this.src = this.src + '?' + Date.now(); }
+        images['ce' + eye + i].onload = function() { this.loaded = true; }
+        images['ce' + eye + i].src = 'images/ce' + eye + i + '-big.png';
       }
     });
-  });
-  console.log(images);
   
   waitLoad();
 }
@@ -209,10 +193,24 @@ function waitLoad() {
       return setTimeout(function() { waitLoad(); }, 200);
     }
   }
+  if(board == null) {
+    return setTimeout(function() { waitLoad(); }, 200);
+  }
   $('#start').show();
+
+  ///**/start();
+}
+
+function loadBoard() {
+  var boardIndex = Math.floor(Math.random() * 50);
+  $.getJSON( 'data/board-' + boardIndex + '.json', function( data ) {
+    board = data;
+    board.level = 0;
+  });
 }
 
 loadImages();
+loadBoard();
 
 function isOpaque(context, x, y) { // x, y coordinate of pixel
   return context.getImageData(x, y, 1, 1).data[3] > 0; // 4th byte is alpha
@@ -233,21 +231,16 @@ function drawCritter(critter, boxSize) {
   var critterCanvas = document.createElement('canvas');
   critterCanvas.height = boxSize;
   critterCanvas.width = boxSize;
-  log([critter.id,critterCanvas.height,critterCanvas.width]);
-
+  
   var critterContext = critterCanvas.getContext("2d", {willReadFrequently: true});
   
   critterContext.globalCompositeOperation = "multiply";
 
-  var flip = Math.random() < 0.5;
   var imageKeys = [
-    'ch' + critter.segs[0] + (flip ? '-flip' : '' ),
-    'cb' + critter.segs[1] + (flip ? '-flip' : '' ),
-    'cr' + critter.segs[2] + (flip ? '-flip' : '' )
+    'ch' + critter.segs[0],
+    'cb' + critter.segs[1],
+    'cr' + critter.segs[2]
   ];
-  if(flip) {
-    imageKeys.reverse();
-  }
 
   var scale = 2/3 *  critterCanvas.height / images[imageKeys[0]].height;
   //log([critterCanvas.width ,critterCanvas.height , images[imageKeys[0]].height])
@@ -256,16 +249,14 @@ function drawCritter(critter, boxSize) {
     critterContext.drawImage(images[imageKeys[index]], Math.floor(images[imageKeys[index]].width * scale * index), 0, images[imageKeys[index]].width * scale, images[imageKeys[index]].height * scale);
   });
 
-
   var yOffs = (0.8 * critterCanvas.height) - bottomPixel(critterCanvas, critterContext);
 
-  //var yOffs = bodyBottoms[segs[1]] * critterCanvas.height;
-  //log(yOffs)
+  var critterRand = new SeededRand(JSON.stringify(critter));
 
   var destinationImage = new Image();
   destinationImage.onload = function(){
     //outContext = canvas.getContext('2d');
-    var color = [rand(360),rand(35) + 65,rand(25)+75];
+    var color = [critterRand.get(360),critterRand.get(35) + 65,critterRand.get(25)+75];
     outContext.fillStyle = `hsl(${color[0]},${color[1]}%,${color[2]}%)`;
     outContext.fillRect(0, yOffs, outCanvas.width, outCanvas.height);
 
@@ -276,16 +267,11 @@ function drawCritter(critter, boxSize) {
     outContext.drawImage(destinationImage, 0, yOffs, critterCanvas.width, critterCanvas.height)
 
     outContext.globalCompositeOperation = "source-over";
-    var leye = rand(10);
-    var reye = leye; if(rand(5) == 0) reye = rand(10);
-    while(leye==5 || reye==5) {//TODO WTF
-      leye = rand(10);
-      reye = leye; if(rand(5) == 0) reye = rand(10);
+    var leye = critter.eyes[0];
+    var reye = critter.eyes[1];
 
-    }
-
-    var offs = [rand(40), rand(40), rand(40), rand(40)];
-    var xOffs = flip ? 1200 : 0;
+    var offs = [critterRand.get(40), critterRand.get(40), critterRand.get(40), critterRand.get(40)];
+    var xOffs = 0;
     var leyeX = 680 + xOffs - images['ceL' + leye].width - offs[0];
     var leyeY = 460 + offs[2] - 10;
     var reyeX = 680 + xOffs + offs[2];
@@ -295,8 +281,8 @@ function drawCritter(critter, boxSize) {
     outContext.drawImage(images['ceR' + reye], reyeX * scale, reyeY * scale + yOffs, images['ceR' + reye].width * scale, images['ceR' + reye].height * scale);
     
     //outContext.drawImage(images['ceR6.png'], 450,400);
+    if(critter.flip) outCanvas.style="-webkit-transform: scaleX(-1);"
   };
   destinationImage.src = critterCanvas.toDataURL();
 
 }
-
