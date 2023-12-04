@@ -171,7 +171,7 @@ function loadImages() {
         images['c' + seg + i] = new Image;
         images['c' + seg + i].onerror = function() { this.src = this.src + '?' + Date.now(); }
         images['c' + seg + i].onload = function() { this.loaded = true; }
-        images['c' + seg + i].src = 'images/c' + seg + i + '-big.svg';
+        images['c' + seg + i].src = 'images/c' + seg + i + '-big.png';
       }
     });
 
@@ -180,7 +180,7 @@ function loadImages() {
         images['ce' + eye + i] = new Image;
         images['ce' + eye + i].onerror = function() { this.src = this.src + '?' + Date.now(); }
         images['ce' + eye + i].onload = function() { this.loaded = true; }
-        images['ce' + eye + i].src = 'images/ce' + eye + i + '-big.svg';
+        images['ce' + eye + i].src = 'images/ce' + eye + i + '-big.png';
       }
     });
   
