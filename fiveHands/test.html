@@ -4,7 +4,7 @@
   src="https://code.jquery.com/jquery-3.7.1.min.js"
   integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
   crossorigin="anonymous"></script>  
-<script src="node_modules/pokersolver/pokersolver.js"></script>
+<script src="pokersolver.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Mulish&display=swap" rel="stylesheet">  
@@ -48,7 +48,8 @@
   }
 
   $(function() {
-    $.getJSON('./data.json') .done(function( data ) {
+    var board = Math.floor(Math.random() * 50);
+    $.getJSON('./data/board-' + board + '.json') .done(function( data ) {
       var rowWidth = 5;
 
       var hands = [];
