@@ -1,77 +1,88 @@
 {
   "board": 6,
-  "score": 26,
+  "score": 28,
   "highest": [
     {
       "cards": [
-        "7d",
-        "5c",
-        "5d",
-        "7s",
-        "7c"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "Qc",
-        "9c",
-        "9h",
-        "Qd",
-        "Qh"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "Tc",
-        "Ks",
-        "Kc",
-        "Td",
-        "Th"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "As",
-        "4d",
+        "Ah",
+        "5h",
         "3h",
-        "2c",
-        "5s"
+        "2h",
+        "4h"
       ],
-      "score": 5,
-      "desc": "Straight"
+      "score": 10,
+      "desc": "Straight Flush"
+    },
+    {
+      "cards": [
+        "6d",
+        "2d",
+        "4d",
+        "3d",
+        "5d"
+      ],
+      "score": 9,
+      "desc": "Straight Flush"
+    },
+    {
+      "cards": [
+        "4c",
+        "6c",
+        "Kc",
+        "3c",
+        "5c"
+      ],
+      "score": 6,
+      "desc": "Flush"
+    },
+    {
+      "cards": [
+        "Js",
+        "Kd",
+        "Qh",
+        "3s",
+        "Jd"
+      ],
+      "score": 2,
+      "desc": "Pair"
+    },
+    {
+      "cards": [
+        "2s",
+        "9h",
+        "7s",
+        "6h",
+        "8c"
+      ],
+      "score": 1,
+      "desc": "High Card"
     }
   ],
   "deal": [
-    "7d",
-    "5c",
-    "Qc",
-    "9c",
-    "Tc",
-    "5d",
-    "As",
-    "9h",
-    "7s",
-    "Qd",
-    "Qh",
-    "Ks",
-    "8h",
-    "8c",
-    "4d",
+    "Ah",
+    "Js",
+    "5h",
+    "4c",
+    "Kd",
     "6d",
-    "6s",
-    "3h",
+    "Qh",
+    "6c",
+    "3s",
+    "2d",
+    "4d",
     "Kc",
-    "7c",
-    "Td",
-    "2c",
-    "Th",
-    "5s",
-    "2s"
+    "3d",
+    "3c",
+    "Jd",
+    "2s",
+    "3h",
+    "9h",
+    "5d",
+    "5c",
+    "7s",
+    "6h",
+    "2h",
+    "4h",
+    "8c"
   ]
 }
