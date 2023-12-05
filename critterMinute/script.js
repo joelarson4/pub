@@ -38,14 +38,16 @@ function clickCritter(id) {
     });
     critters.sort();
 
-    var confirmed = true;
-    if(levelData.goal == 'twin') {
+    var confirmed = false;
+    if(levelData.goal == 'twins') {
       confirmed = critters[0] == critters[1];
     } else if(levelData.goal == 'triplets') {
       confirmed = critters[0] == critters[1] && critters[0] == critters[2];
     } else if(levelData.goal == 'twinPair') {
       confirmed = critters[0] == critters[1] && critters[2] == critters[3];
     }
+    log(critters[0] + ' ' + critters[1]);
+    log(confirmed);
 
     if(confirmed) {
       board.level++;
@@ -171,7 +173,7 @@ function loadImages() {
         images['c' + seg + i] = new Image;
         images['c' + seg + i].onerror = function() { this.src = this.src + '?' + Date.now(); }
         images['c' + seg + i].onload = function() { this.loaded = true; }
-        images['c' + seg + i].src = 'images/c' + seg + i + '-big.png';
+        images['c' + seg + i].src = 'images/c' + seg + i + '-big.gif';
       }
     });
 
@@ -180,7 +182,7 @@ function loadImages() {
         images['ce' + eye + i] = new Image;
         images['ce' + eye + i].onerror = function() { this.src = this.src + '?' + Date.now(); }
         images['ce' + eye + i].onload = function() { this.loaded = true; }
-        images['ce' + eye + i].src = 'images/ce' + eye + i + '-big.png';
+        images['ce' + eye + i].src = 'images/ce' + eye + i + '-big.gif';
       }
     });
   
