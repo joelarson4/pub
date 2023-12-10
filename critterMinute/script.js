@@ -73,11 +73,6 @@ function getCritterHtml(id, seg, boxSize) {
     `" data-critter="${seg[0]},${seg[1]},${seg[2]}" onclick="clickCritter('${id}')" id="${id}"` +
     `style="width: ${boxSize}px; height: ${boxSize}px;">` +
     `<canvas class="critterInner" width="${boxSize}" height="${boxSize}">` + 
-    //`<img class="segment segment1" src="./images/${images[0]}"/>` +
-    //`<img class="segment segment2" src="./images/${images[1]}"/>` +
-    //`<img class="segment segment3" src="./images/${images[2]}"/>` +
-    //'<img class="eye eyeL" src="./images/ceL' + 4 + '.png"/>' + 
-    //'<img class="eye eyeR" src="./images/ceR' + 4 + '.png"/>' + 
     '</canvas></div>'// + id + ' ' + seg +'</div>';
   return html;
 }
@@ -173,7 +168,7 @@ function loadImages() {
         images['c' + seg + i] = new Image;
         images['c' + seg + i].onerror = function() { this.src = this.src + '?' + Date.now(); }
         images['c' + seg + i].onload = function() { this.loaded = true; }
-        images['c' + seg + i].src = 'images/c' + seg + i + '-big.gif';
+        images['c' + seg + i].src = 'images/c' + seg + i + '.gif';
       }
     });
 
@@ -182,7 +177,7 @@ function loadImages() {
         images['ce' + eye + i] = new Image;
         images['ce' + eye + i].onerror = function() { this.src = this.src + '?' + Date.now(); }
         images['ce' + eye + i].onload = function() { this.loaded = true; }
-        images['ce' + eye + i].src = 'images/ce' + eye + i + '-big.gif';
+        images['ce' + eye + i].src = 'images/ce' + eye + i + '.gif';
       }
     });
   
@@ -272,12 +267,12 @@ function drawCritter(critter, boxSize) {
     var leye = critter.eyes[0];
     var reye = critter.eyes[1];
 
-    var offs = [critterRand.get(40), critterRand.get(40), critterRand.get(40), critterRand.get(40)];
+    var offs = [critterRand.get(10), critterRand.get(10), critterRand.get(10), critterRand.get(10)];
     var xOffs = 0;
-    var leyeX = 680 + xOffs - images['ceL' + leye].width - offs[0];
-    var leyeY = 460 + offs[2] - 10;
-    var reyeX = 680 + xOffs + offs[2];
-    var reyeY = 460 + offs[3] - 10;
+    var leyeX = 164 + xOffs - images['ceL' + leye].width - offs[0];
+    var leyeY = 111 + offs[2] - 3;
+    var reyeX = 164 + xOffs + offs[2];
+    var reyeY = 111 + offs[3] - 3;
     //log([leyeX,leyeX * scale])
     outContext.drawImage(images['ceL' + leye], leyeX * scale, leyeY * scale + yOffs, images['ceL' + leye].width * scale, images['ceL' + leye].height * scale);
     outContext.drawImage(images['ceR' + reye], reyeX * scale, reyeY * scale + yOffs, images['ceR' + reye].width * scale, images['ceR' + reye].height * scale);

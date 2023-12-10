@@ -1,0 +1,2 @@
+draw offscreen
+fit on ipad
