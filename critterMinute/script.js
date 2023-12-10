@@ -26,9 +26,12 @@ function SeededRand(seed) {
 
 var startTime = null;
 var gameTime = null;
+var timerTmo = null;
+var gameOver = false;
 function start() {
   var startTime = Date.now();
-  var tmo = setInterval(function() {
+  var timerTmo = setInterval(function() {
+    if(gameOver) return;
     var secondsRunning = (Date.now() - startTime) / 1000;
     var minutesRunning = Math.floor(secondsRunning / 60);
     var secondsInMinuteRunning = (100 + (secondsRunning - minutesRunning * 60)).toFixed(0).substring(1);
@@ -105,10 +108,11 @@ function bottomPixel(canvas, context) {
   }
 }
 function done() {
+  gameOver = true;
   $('.level').html('FIN');
   $('.instruction').html('YA DID IT!');
   $('.body:visible').html(`<div class="done">★ NICE! ★<p style="font-size: 30px; display:none;">It took you ${gameTime.minutes} minutes, ${gameTime.seconds} seconds</div>`);
-  $('.done').animate({'margin-top': 350, 'font-size': '90px'}, 1000);
+  $('.done').animate({'margin-top': 300, 'font-size': '90px'}, 1000);
   setTimeout(function() { $('.done p').fadeIn(); }, 900);
   //$('.done').animate({}, 1000);
 }
