@@ -116,8 +116,10 @@ function nextScreen() {
   $('.body').html(out.join('\n'));
 
   setTimeout(function() {
-    critters.forEach(function(critter) {
-      drawCritter(critter, boxSize);
+    critters.forEach(function(critter, index) {
+      setTimeout(function() {
+        drawCritter(critter, boxSize);
+      }, index * 100);
     });
 
     var instructions = {
@@ -225,6 +227,7 @@ function bottomPixel(canvas, context) {
 function drawCritter(critter, boxSize) {
   var outCanvas = document.getElementById(critter.id).getElementsByTagName('canvas')[0];
   var outContext = outCanvas.getContext('2d');
+  $(outCanvas).css({opacity: 0})
   var critterCanvas = document.createElement('canvas');
   critterCanvas.height = boxSize;
   critterCanvas.width = boxSize;
@@ -278,7 +281,8 @@ function drawCritter(critter, boxSize) {
     outContext.drawImage(images['ceR' + reye], reyeX * scale, reyeY * scale + yOffs, images['ceR' + reye].width * scale, images['ceR' + reye].height * scale);
     
     //outContext.drawImage(images['ceR6.png'], 450,400);
-    if(critter.flip) outCanvas.style="-webkit-transform: scaleX(-1);"
+    if(critter.flip) { $(outCanvas).css('-webkit-transform','scaleX(-1)'); }
+    $(outCanvas).animate({opacity:1},200);
   };
   destinationImage.src = critterCanvas.toDataURL();
 
