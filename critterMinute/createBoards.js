@@ -2,9 +2,11 @@ const _ = require('lodash');
 const fs = require('fs');
 const { log, args, readCsv, writeCsv, runCommand, SeededRandom } = require('sweet-potato');
 
-for(var board = 0; board < 50; board++) {
+var randOffs = Math.random() * 50000 + Math.random();
+
+for(var board = 0; board < 100; board++) {
   var boardData = { board: board };
-  var rand = SeededRandom(board);
+  var rand = SeededRandom(board + randOffs);
 
   var levelSizes = [
       [2,3],//1

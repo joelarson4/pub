@@ -23,128 +23,6 @@ function SeededRand(seed) {
   }
 }
 
-function clickCritter(id) {
-  $('.level' + board.level + '#' + id).toggleClass('critterSelected');
-
-  var levelData = board.levels[board.level];
-  var selectionTarget = levelData.goal == 'twinPair' ? 4 :
-    levelData.goal == 'triplets' ? 3 : 2;
-
-  var selected = $('.critterSelected');
-  if(selected.length == selectionTarget) {
-    var critters = [];
-    selected.toArray().forEach(function(s) {
-      critters.push(s.getAttribute('data-critter'));
-    });
-    critters.sort();
-
-    var confirmed = false;
-    if(levelData.goal == 'twins') {
-      confirmed = critters[0] == critters[1];
-    } else if(levelData.goal == 'triplets') {
-      confirmed = critters[0] == critters[1] && critters[0] == critters[2];
-    } else if(levelData.goal == 'twinPair') {
-      confirmed = critters[0] == critters[1] && critters[2] == critters[3];
-    }
-    log(critters[0] + ' ' + critters[1]);
-    log(confirmed);
-
-    if(confirmed) {
-      board.level++;
-      selected.addClass('confirmed');
-      setTimeout(function() {
-        nextScreen();
-      }, 500);
-    } else {
-      $('.critterSelected').addClass('wrong')
-      setTimeout(function() {
-        $('.wrong').removeClass('wrong');
-        $('.critterSelected').removeClass('critterSelected')
-      },200);
-    }
-  }
-  //level++;
-  //nextScreen();
-}
-
-function getCritterHtml(id, seg, boxSize) {
-  var html = '<div class="critter ' +
-    ` level${board.level}` +
-    `" data-critter="${seg[0]},${seg[1]},${seg[2]}" onclick="clickCritter('${id}')" id="${id}"` +
-    `style="width: ${boxSize}px; height: ${boxSize}px;">` +
-    `<canvas class="critterInner" width="${boxSize}" height="${boxSize}">` + 
-    '</canvas></div>'// + id + ' ' + seg +'</div>';
-  return html;
-}
-
-function nextScreen() {
-  var levelData = board.levels[board.level];
-  if(!levelData) {
-    done();
-    return;
-  }
-
-  $('.instruction').html('...');
-  var width = levelData.size[0];
-  var height = levelData.size[1];
-  var boxSize = ($('.body').width() / width) - (width * 5);
-
-  var grid = [];
-  for(var y = 0; y < height; y++) {
-    var row = [];
-    grid.push(row);
-    for(var x = 0; x < width; x++) {
-      row.push(levelData.critters[y * width + x].split('/'));
-    }
-  }
-
-  var out = [];
-  var critters = [];
-  for(var y = 0; y < height; y++) {
-    for(var x = 0; x < width; x++) {
-      var id = `critter-${x}-${y}`;
-      critters.push({id: id, segs: grid[y][x].slice(0,3), flip: grid[y][x][3] == 1, eyes: grid[y][x].slice(4) });
-      out.push(getCritterHtml(id, grid[y][x], boxSize));
-    }
-    out.push('<br/>');
-  }
-
-  if(board.level == 0) {
-    $('.time').html('-:--');
-  }
-  $('.level').html('L' + (1 + board.level));
-  $('.body').html(out.join('\n'));
-
-  setTimeout(function() {
-    critters.forEach(function(critter, index) {
-      setTimeout(function() {
-        drawCritter(critter, boxSize);
-      }, index * 100);
-    });
-
-    var instructions = {
-      twins: 'FIND THE TWINS',
-      triplets: 'FIND ALL THREE TRIPLETS',
-      twinPair: 'FIND TWO PAIRS OF TWINS',
-    }
-
-    $('.instruction').html(instructions[levelData.goal]);
-  }, 2);
-
-
-  setTimeout(function() {
-    $('.critterSelected').removeClass('critterSelected');
-  }, 200);
-  setTimeout(function() {
-    $('.critterSelected').removeClass('critterSelected');
-  }, 300);  
-}
-
-function done() {
-  $('.level').html('FIN');
-  $('.instruction').html('YA DID IT!');
-  $('.body').html(`<div class="done">★ NICE! ★<p style="font-size: 30px;">It took you ${gameTime.minutes} minutes, ${gameTime.seconds} seconds</div>`);
-}
 
 var startTime = null;
 var gameTime = null;
@@ -158,7 +36,7 @@ function start() {
     $('.time').html(`${minutesRunning}:${secondsInMinuteRunning}`);
   }, 200);
 
-  nextScreen();
+  updateScreen();
 }
 
 
@@ -201,10 +79,12 @@ function waitLoad() {
 }
 
 function loadBoard() {
-  var boardIndex = Math.floor(Math.random() * 50);
+  var boardIndex = Math.floor(Math.random() * 100);
   $.getJSON( 'data/board-' + boardIndex + '.json', function( data ) {
     board = data;
     board.level = 0;
+    //board.levels = board.levels.slice(0,1);
+    prepareNextLevel(0);
   });
 }
 
@@ -224,10 +104,164 @@ function bottomPixel(canvas, context) {
     }
   }
 }
+function done() {
+  $('.level').html('FIN');
+  $('.instruction').html('YA DID IT!');
+  $('.body:visible').html(`<div class="done">★ NICE! ★<p style="font-size: 30px; display:none;">It took you ${gameTime.minutes} minutes, ${gameTime.seconds} seconds</div>`);
+  $('.done').animate({'margin-top': 350, 'font-size': '90px'}, 1000);
+  setTimeout(function() { $('.done p').fadeIn(); }, 900);
+  //$('.done').animate({}, 1000);
+}
+
+var bodyIds = ['body-b','body-a'];
+
+function clickCritter(id) {
+  $('.level' + board.level + '#' + id).toggleClass('critterSelected');
+
+  var levelData = board.levels[board.level];
+  var selectionTarget = levelData.goal == 'twinPair' ? 4 :
+    levelData.goal == 'triplets' ? 3 : 2;
+
+  var selected = $('.critterSelected');
+  if(selected.length == selectionTarget) {
+    var critters = [];
+    selected.toArray().forEach(function(s) {
+      critters.push(s.getAttribute('data-critter'));
+    });
+    critters.sort();
+
+    var confirmed = false;
+    if(levelData.goal == 'twins') {
+      confirmed = critters[0] == critters[1];
+    } else if(levelData.goal == 'triplets') {
+      confirmed = critters[0] == critters[1] && critters[0] == critters[2];
+    } else if(levelData.goal == 'twinPair') {
+      confirmed = critters[0] == critters[1] && critters[2] == critters[3];
+    }
+    //log(critters[0] + ' ' + critters[1]);
+    log(confirmed + ' confirmed');
+    log(critters);
+
+    if(confirmed) {
+      board.level++;
+      selected.addClass('confirmed');
+      setTimeout(function() {
+        updateScreen();
+      }, 500);
+    } else {
+      $('.critterSelected').addClass('wrong')
+      setTimeout(function() {
+        $('.wrong').removeClass('wrong');
+        $('.critterSelected').removeClass('critterSelected')
+      },200);
+    }
+  }
+  //level++;
+  //updateScreen();
+}
+
+function updateScreen() {
+  var levelData = board.levels[board.level];
+  if(!levelData) {
+    done();
+    return;
+  }
+
+  var currentBodyId = bodyIds[board.level % 2];
+  var currentBody = $('#' + currentBodyId);
+
+  if(board.level == 0) {
+    $('.time').html('-:--');
+  }
+  $('.level').html('L' + (1 + board.level));
+
+  var instructions = {
+    twins: 'FIND THE TWINS',
+    triplets: 'FIND ALL THREE TRIPLETS',
+    twinPair: 'FIND TWO PAIRS OF TWINS',
+  }
+
+  $('.instruction').html(instructions[levelData.goal]);
+
+  var hideId = bodyIds[(board.level + 1) % 2];
+  //log('hiding ' + hideId)
+  $('#' + bodyIds[(board.level + 1) % 2]).html('').hide();
+  //log('showing ' + currentBodyId)
+  currentBody.show();
+
+  setTimeout(function() {
+    var nextLevel = board.level + 1;
+    if(board.levels[nextLevel]) {
+      prepareNextLevel(nextLevel);
+    };
+  }, 200);
+}
+
+function prepareNextLevel(nextLevel) {
+  drawAllCritters(board.levels[nextLevel], $('#' + bodyIds[nextLevel % 2]));
+}
+
+
+function drawAllCritters(levelData, useBody) {
+  //log('drawing critters in ' + useBody.get(0).id)
+  var width = levelData.size[0];
+  var height = levelData.size[1];
+  var boxSize = ($('.body:visible').width() / width) - (width * 5);
+
+  var grid = [];
+  for(var y = 0; y < height; y++) {
+    var row = [];
+    grid.push(row);
+    for(var x = 0; x < width; x++) {
+      row.push(levelData.critters[y * width + x].split('/'));
+    }
+  }
+
+  var out = [];
+  var critters = [];
+  //var level = board.level;
+  for(var y = 0; y < height; y++) {
+    for(var x = 0; x < width; x++) {
+      var id = `critter-l${levelData.levelIndex}-x${x}-y${y}`;
+      critters.push({id: id, segs: grid[y][x].slice(0,3), flip: grid[y][x][3] == 1, eyes: grid[y][x].slice(4) });
+      out.push(getCritterHtml(id, grid[y][x], x, y, boxSize, levelData.levelIndex));
+    }
+    out.push('<br/>');
+  }
+  useBody.html(out.join('\n'));
+
+  setTimeout(function() {
+    critters.forEach(function(critter, index) {
+      drawCritter(critter, boxSize);
+    });
+  }, 200);
+
+  
+  setTimeout(function() {
+    $('.critterSelected').removeClass('critterSelected');
+  }, 200);
+  setTimeout(function() {
+    $('.critterSelected').removeClass('critterSelected');
+  }, 300);  
+}
+
+function getCritterHtml(id, seg,  x, y, boxSize, levelIndex) {
+  var topMargin = (y == 0 ? 0 : boxSize * -0.1 );
+  var html = '<div class="critter ' +
+    ` level${levelIndex}` +
+    `" data-critter="${seg[0]},${seg[1]},${seg[2]}" onclick="clickCritter('${id}')" id="${id}"` +
+    `style="width: ${boxSize}px; height: ${boxSize}px; margin-top: ${topMargin}px">` +
+    `<canvas class="critterInner" width="${boxSize}" height="${boxSize}">` + 
+    '</canvas></div>'// + id + ' ' + seg +'</div>';
+  return html;
+}
+
+
+
 function drawCritter(critter, boxSize) {
+  //log('drawing critter ' + critter.id);
   var outCanvas = document.getElementById(critter.id).getElementsByTagName('canvas')[0];
   var outContext = outCanvas.getContext('2d');
-  $(outCanvas).css({opacity: 0})
   var critterCanvas = document.createElement('canvas');
   critterCanvas.height = boxSize;
   critterCanvas.width = boxSize;
@@ -243,8 +277,7 @@ function drawCritter(critter, boxSize) {
   ];
 
   var scale = 2/3 *  critterCanvas.height / images[imageKeys[0]].height;
-  //log([critterCanvas.width ,critterCanvas.height , images[imageKeys[0]].height])
-
+  
   critter.segs.forEach(function(seg, index) {
     critterContext.drawImage(images[imageKeys[index]], Math.floor(images[imageKeys[index]].width * scale * index), 0, images[imageKeys[index]].width * scale, images[imageKeys[index]].height * scale);
   });
@@ -282,7 +315,6 @@ function drawCritter(critter, boxSize) {
     
     //outContext.drawImage(images['ceR6.png'], 450,400);
     if(critter.flip) { $(outCanvas).css('-webkit-transform','scaleX(-1)'); }
-    $(outCanvas).animate({opacity:1},200);
   };
   destinationImage.src = critterCanvas.toDataURL();
 
