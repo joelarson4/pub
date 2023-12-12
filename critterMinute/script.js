@@ -27,19 +27,43 @@ function SeededRand(seed) {
 var startTime = null;
 var gameTime = null;
 var timerTmo = null;
+var prePauseSeconds = 0;
+var secondsRunning = 0;
 var gameOver = false;
+var paused = false;
+var startTime = Date.now();
 function start() {
-  var startTime = Date.now();
+  startTime = Date.now();
   var timerTmo = setInterval(function() {
     if(gameOver) return;
-    var secondsRunning = (Date.now() - startTime) / 1000;
+    if(paused) return;
+    secondsRunning = prePauseSeconds + (Date.now() - startTime) / 1000;
     var minutesRunning = Math.floor(secondsRunning / 60);
     var secondsInMinuteRunning = (100 + (secondsRunning - minutesRunning * 60)).toFixed(0).substring(1);
     gameTime = { minutes: minutesRunning, seconds: secondsInMinuteRunning };
     $('.time').html(`${minutesRunning}:${secondsInMinuteRunning}`);
   }, 200);
 
+  $('.time,.paused').click(function() {
+    if(!paused) { pause(); }
+    else { resume(); }
+  })
+
   updateScreen();
+}
+
+function pause() {
+  paused = true;
+  prePauseSeconds = secondsRunning;
+  $('#' + bodyIds[board.level % 2]).hide();
+  $('.paused').show();
+}
+function resume() {
+  paused = false;
+  startTime = Date.now();
+  $('#' + bodyIds[board.level % 2]).show();
+  $('.paused').hide();
+
 }
 
 
