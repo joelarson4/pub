@@ -5,13 +5,14 @@ var _ = require('lodash');
 var keyChords = require('./keyChords.js');
 var chordDistance = require('./chordDistance.js');
 var chordExploder = require('./chordExploder.js');
+var Waiter = require('./waiter.js')
 var {
   stringStarts,
   parseFret,
   toFret,
   noteNames,
   getChordChart,
-  loadAllChords,
+  loadbaseTableChords,
   centerFret
 } = require('./chordChart');
 
@@ -33,71 +34,45 @@ function printPage(options) {
   var keyNote = key.split('m')[0];
   var keyNoteIndex = _.indexOf(keyChords.sharps, keyNote);
 
+  var rootChordName = key.indexOf('m') > -1 ? key : key + 'M';
+  //log(chordExploder.byName[rootChordName],rootChordName)
+
+  var leastXs = _.sortBy(chordExploder.byName[rootChordName], function(p) { return p.split('x').length; });
+  leastXs = leastXs.slice(0, Math.ceil(leastXs.length / 3));
+  var rootChordPlay = rand.get(leastXs);
+
+  chordExploder.allRows.forEach(function(chord) {
+    if(chord.play.split('x').length > 2 && rand.get(2) == 1) {
+      chord.distance = 100;
+      return;
+    }
+    chord.distance = chordDistance(chord.play, rootChordPlay, true);
+  });
+
+  chordExploder.allRows = _.sortBy(chordExploder.allRows, 'distance');
+  
+
   var baseTable = keyChords.tables[keyMinor ? 1 : 0].base;
-  var allChords = _.flatten(baseTable);
+  var baseTableChords = _.flatten(baseTable);
   var poolSize = 30;
   var allNames = _.keys(chordExploder.byName);
 
-  allChords.forEach(function(chord) {
+  baseTableChords.forEach(function(chord) {
     chord.note = keyChords.sharps[(chord.noteIndex + keyNoteIndex) % 12];
 
     chord.chordName = chord.note + chord.alteration;
-
-    chord.plays = chordExploder.byName[chord.chordName] || [];
-    chord.plays = rand.shuffle(chord.plays);
-    if(chord.plays.length < poolSize) {
-      var startsWith = [];
-      allNames.forEach(function(name) {
-        if(name.indexOf(chord.chordName) == 0) {
-          startsWith = startsWith.concat(chordExploder.byName[name]);
-        }
-      });
-      startsWith = rand.shuffle(startsWith);
-      chord.plays = chord.plays.concat(startsWith);
-    }
-    chord.plays = _.uniq(chord.plays);
-    if(chord.plays.length >= poolSize) {
-      chord.plays = chord.plays.slice(0, poolSize);
-    }
-
-    while(chord.plays.length >= poolSize / 2 && rand.get(100) < 99)  {
-      var index = rand.get(chord.plays.length);
-      if(chord.plays[index].split('x').length >= 3) {
-        chord.plays.splice(index, 1);
+    
+    for(var ri = 0; ri < chordExploder.allRows.length; ri++) {
+      if(chordExploder.allRows[ri].name.indexOf(chord.chordName) == 0 && rand.get(2) == 0) {
+        _.extend(chord,chordExploder.allRows[ri]);
+        break;
       }
-    }  
+    }
   })
-
-
-  var rootChord = baseTable[baseTable.length - 1][0];
-  rootChord.usePlay = rand.get(rootChord.plays);
-  rootChord.useDistance = 0;
-  rootChord.useXs = 0;
-  delete rootChord.plays;
-
-  allChords.forEach(function(chord) {
-    if(chord.usePlay) return;
-    var byDistance = [];
-    chord.plays.forEach(function(play) {
-      var distance = chordDistance(play, rootChord.usePlay);
-      byDistance.push({ play: play, distance: distance });
-    })
-    byDistance = _.sortBy(byDistance, 'distance');
-    //log(byDistance);
-    chord.usePlay = byDistance[0].play;
-    chord.useDistance = byDistance[0].distance;
-    chord.useXs = byDistance[0].play.split('x').length - 1;
-    delete chord.plays;
-  });
-
-  //log(allChords)
-  allChords = _.sortBy(allChords, 'useXs');
-  allChords = allChords.slice(0,18);
-  allChords = _.sortBy(allChords, 'useDistance');
-  allChords = allChords.slice(0,12);
-  //log(allChords);
-
-
+  baseTableChords = _.sortBy(baseTableChords, 'distance');
+  
+  baseTableChords = baseTableChords.slice(0,12);
+  
   var columnCount = 3;
   var rowCount = 4;
 
@@ -115,15 +90,14 @@ function printPage(options) {
     return stringTotal / countTotal;
   }
 
-  allChords.forEach(function(chord, index) {
+  baseTableChords.forEach(function(chord, index) {
     var row = Math.floor(index / columnCount);
     var col = index % columnCount;
     var gridRow = grid[row] || [];
-    var actualName = chordExploder.byPlay[chord.usePlay];
-    gridRow[col] = getChordChart(chord.usePlay, actualName.replace('M',''), 6);
-    //gridRow[col].push(chord.useDistance.toFixed(2))
-    gridRow[col].centerFret = centerFret(chord.usePlay);
-    gridRow[col].centerString = -1 * getCenterString(chord.usePlay);
+    var actualName = chordExploder.byPlay[chord.play];
+    gridRow[col] = getChordChart(chord.play, actualName.replace('M',''), 6);
+    gridRow[col].centerFret = centerFret(chord.play);
+    gridRow[col].centerString = -1 * getCenterString(chord.play);
 
     grid[row] = gridRow;
   });
@@ -180,6 +154,7 @@ function printPage(options) {
 }
 
 if (require.main === module) { 
+  var waiter = new Waiter('building');
   if(args.key == 'All') {
     var out = [];
 
@@ -191,6 +166,7 @@ if (require.main === module) {
       })
     });
 
+    waiter.stop();
     log(out.join('\n'));
   } else {
     log(printPage(args));

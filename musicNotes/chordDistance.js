@@ -40,6 +40,7 @@ function getFingerDetails(fingering) {
   var fingerIndex = 0;
   var details = {
     fingers: [],
+    xCount: 0,
     minFret: 20,
     maxFret: 0,
     minString: 10,
@@ -47,7 +48,7 @@ function getFingerDetails(fingering) {
     fingersDown: 0
   }
   fingering.forEach(function(fret, string) {
-    if(fret == 'x') return;
+    if(fret == 'x') { details.xCount++; return; }
     details.fingers.push({ fret: fret, string: string });
     details.fingersDown++;
     details.minFret = Math.min(fret, details.minFret);
@@ -70,8 +71,12 @@ function iterateThru(val1, val2, func) {
 
 function getFingerGrid(fingers, fretOffs, stringOffs) {
   var grid = {};
-  for(var string = -5; string < 5; string++) {
-    for(var fret = -5; fret < 5; fret++) {
+  var minString = -5;
+  var maxString = 5;
+  var minFret = -4;
+  var maxFret = 4;
+  for(var string = minString; string < maxString; string++) {
+    for(var fret = minFret; fret < maxFret; fret++) {
       var addr = string + ',' + fret;
       grid[addr] = 0;
     }
@@ -97,7 +102,7 @@ function printGrid(grid) {
 }
 
 
-function chordDistance(play1, play2) {
+function chordDistance(play1, play2, xPenalty) {
   var center1 = centerFret(play1);
   var center2 = centerFret(play2);
   //log([play1,play2,center1,center2])
@@ -115,7 +120,7 @@ function chordDistance(play1, play2) {
   var offsets = [];
   var gridA = getFingerGrid(detailsA.fingers, 0, 0);
   //printGrid(gridA);
-  
+
   iterateThru(-5, 5, function(fretOffs) {
     iterateThru(-5, 5, function(stringOffs) {      
       var gridB = getFingerGrid(detailsB.fingers, fretOffs, stringOffs);
@@ -135,7 +140,7 @@ function chordDistance(play1, play2) {
   offsets = _.sortBy(offsets, 'fingerDistance');
   //log(offsets[0])
   
-  return fretDistance / 2 + offsets[0].fingerDistance;
+  return fretDistance / 2 + offsets[0].fingerDistance + (xPenalty ? details2.xCount : 0) / 2;
 }
 
 

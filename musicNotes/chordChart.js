@@ -93,32 +93,32 @@ function getChordChart(play, name, spaceLength) {
   out.push(chordId);
 
   var chart = [
-    '  ______'.split('')
+    '    ______'.split('')
   ];
 
   var firstFret = (minFret > 3 ? minFret - 2 : 0);
   maxFret = Math.max(maxFret, firstFret + 4);
 
   for(var fi = firstFret; fi < maxFret; fi++) {
-    chart.push('  ||||||'.split(''));
+    chart.push('    ||||||'.split(''));
   }
   if(minFret > 4) {
     var digi = minFret.toString().split('');
     if(digi.length == 2) {
-      chart[2][0] = digi[0];
-      chart[2][1] = digi[1];
+      chart[2][2] = digi[0];
+      chart[2][3] = digi[1];
     } else {
-      chart[2][1] = digi[0];
+      chart[2][3] = digi[0];
     }
   }
 
   play.toUpperCase().split('').forEach(function(fret, index) {
-    if(fret == 'X') { chart[0][index  + 2] = 'x'; return;}
+    if(fret == 'X') { chart[0][index  + 4] = 'x'; return;}
     var fretN = parseFret(fret) - firstFret;
     if(fret == 0) {
-      chart[0][index  + 2] = 'o';
+      chart[0][index  + 4] = 'o';
     } else {
-      chart[fretN ][index  + 2] = '●';
+      chart[fretN ][index  + 4] = '●';
     } 
   });
 
