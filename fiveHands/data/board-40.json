@@ -1,88 +1,88 @@
 {
   "board": 40,
-  "score": 30,
+  "score": 27,
   "highest": [
     {
       "cards": [
-        "8h",
-        "6d",
-        "8c",
-        "8d",
-        "6h"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "5h",
-        "Qd",
-        "Qc",
+        "Qh",
+        "4c",
         "Qs",
-        "5c"
+        "Qd",
+        "Qc"
+      ],
+      "score": 8,
+      "desc": "Four of a Kind"
+    },
+    {
+      "cards": [
+        "Jh",
+        "7d",
+        "7h",
+        "7s",
+        "7c"
+      ],
+      "score": 8,
+      "desc": "Four of a Kind"
+    },
+    {
+      "cards": [
+        "9s",
+        "6s",
+        "9d",
+        "6c",
+        "9c"
       ],
       "score": 7,
       "desc": "Full House"
     },
     {
       "cards": [
-        "4s",
-        "Td",
-        "4d",
-        "Tc",
-        "Ts"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "7c",
-        "Jc",
-        "3c",
-        "2c",
-        "6c"
-      ],
-      "score": 6,
-      "desc": "Flush"
-    },
-    {
-      "cards": [
-        "Kd",
-        "Ah",
-        "Kh",
+        "8d",
+        "5d",
         "As",
-        "3d"
+        "5c",
+        "Ac"
       ],
       "score": 3,
       "desc": "Two Pair"
+    },
+    {
+      "cards": [
+        "3s",
+        "Js",
+        "Td",
+        "Kd",
+        "6h"
+      ],
+      "score": 1,
+      "desc": "High Card"
     }
   ],
   "deal": [
-    "8h",
-    "6d",
-    "7c",
-    "5h",
-    "4s",
-    "Qd",
-    "8c",
-    "Kd",
-    "Jc",
+    "Qh",
+    "4c",
+    "Jh",
+    "9s",
     "8d",
-    "Td",
-    "3c",
-    "2c",
-    "4d",
-    "Tc",
-    "Ah",
-    "Qc",
-    "Qs",
-    "6h",
-    "Kh",
+    "7d",
+    "6s",
+    "5d",
+    "9d",
+    "7h",
+    "3s",
     "As",
     "6c",
     "5c",
-    "Ts",
-    "3d"
+    "Qs",
+    "Ac",
+    "Qd",
+    "9c",
+    "Js",
+    "Td",
+    "Kd",
+    "7s",
+    "Qc",
+    "7c",
+    "6h"
   ]
 }

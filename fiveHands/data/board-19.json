@@ -1,88 +1,88 @@
 {
   "board": 19,
-  "score": 29,
+  "score": 28,
   "highest": [
     {
       "cards": [
-        "7c",
-        "8c",
-        "4c",
-        "6c",
-        "5c"
-      ],
-      "score": 9,
-      "desc": "Straight Flush"
-    },
-    {
-      "cards": [
         "8h",
-        "Qd",
-        "8d",
-        "Qc",
-        "Qs"
+        "7d",
+        "7s",
+        "7c",
+        "7h"
       ],
-      "score": 7,
-      "desc": "Full House"
+      "score": 8,
+      "desc": "Four of a Kind"
     },
     {
       "cards": [
-        "6d",
-        "Td",
-        "Tc",
-        "6h",
-        "Ts"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "5h",
-        "4s",
-        "Kd",
-        "4d",
-        "Kh"
-      ],
-      "score": 3,
-      "desc": "Two Pair"
-    },
-    {
-      "cards": [
-        "Jc",
-        "3s",
-        "Ah",
         "As",
-        "3h"
+        "Qd",
+        "Qh",
+        "Qc",
+        "Ah"
       ],
-      "score": 3,
-      "desc": "Two Pair"
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "Th",
+        "9h",
+        "Td",
+        "9c",
+        "9s"
+      ],
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "6c",
+        "2c",
+        "3d",
+        "4s",
+        "5d"
+      ],
+      "score": 5,
+      "desc": "Straight"
+    },
+    {
+      "cards": [
+        "Ks",
+        "8s",
+        "Jd",
+        "4d",
+        "3s"
+      ],
+      "score": 1,
+      "desc": "High Card"
     }
   ],
   "deal": [
     "8h",
-    "6d",
-    "7c",
-    "5h",
-    "4s",
-    "Qd",
-    "8c",
-    "Kd",
-    "Jc",
-    "8d",
-    "Td",
-    "3s",
-    "4c",
-    "4d",
-    "Tc",
-    "Ah",
-    "Qc",
-    "Qs",
-    "6h",
-    "Kh",
     "As",
     "6c",
-    "5c",
-    "Ts",
-    "3h"
+    "Ks",
+    "Th",
+    "8s",
+    "Jd",
+    "Qd",
+    "7d",
+    "Qh",
+    "2c",
+    "7s",
+    "7c",
+    "3d",
+    "9h",
+    "Td",
+    "Qc",
+    "4s",
+    "5d",
+    "9c",
+    "4d",
+    "Ah",
+    "9s",
+    "7h",
+    "3s"
   ]
 }

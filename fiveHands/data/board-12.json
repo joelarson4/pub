@@ -1,88 +1,88 @@
 {
   "board": 12,
-  "score": 27,
+  "score": 26,
   "highest": [
     {
       "cards": [
-        "Td",
-        "9d",
-        "6d",
-        "7d",
-        "8d"
-      ],
-      "score": 9,
-      "desc": "Straight Flush"
-    },
-    {
-      "cards": [
-        "Ts",
-        "3s",
-        "Tc",
-        "Th",
-        "3h"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "Ad",
-        "6h",
-        "6s",
-        "6c",
-        "Ac"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
+        "Qc",
+        "4d",
+        "4c",
         "Qs",
-        "4h",
-        "7s",
-        "7h",
-        "4d"
+        "Qd"
       ],
-      "score": 3,
-      "desc": "Two Pair"
+      "score": 7,
+      "desc": "Full House"
     },
     {
       "cards": [
-        "8c",
-        "Jh",
-        "2c",
-        "9c",
-        "As"
+        "Tc",
+        "2d",
+        "Th",
+        "Td",
+        "2c"
+      ],
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "5s",
+        "8s",
+        "9s",
+        "7s",
+        "Ks"
+      ],
+      "score": 6,
+      "desc": "Flush"
+    },
+    {
+      "cards": [
+        "6d",
+        "4h",
+        "5h",
+        "3d",
+        "2s"
+      ],
+      "score": 5,
+      "desc": "Straight"
+    },
+    {
+      "cards": [
+        "Kd",
+        "8d",
+        "Ah",
+        "6c",
+        "9c"
       ],
       "score": 1,
       "desc": "High Card"
     }
   ],
   "deal": [
+    "Qc",
+    "4d",
+    "4c",
+    "Tc",
+    "2d",
+    "Kd",
+    "Th",
+    "5s",
+    "8s",
+    "9s",
+    "8d",
     "Td",
     "Qs",
-    "Ts",
-    "3s",
-    "8c",
-    "Ad",
-    "6h",
-    "4h",
     "7s",
-    "Tc",
-    "9d",
-    "6s",
-    "6d",
-    "Jh",
-    "6c",
-    "Ac",
-    "7h",
-    "7d",
+    "Qd",
+    "Ks",
     "2c",
-    "8d",
-    "Th",
+    "6d",
+    "Ah",
+    "4h",
+    "6c",
+    "5h",
     "9c",
-    "3h",
-    "4d",
-    "As"
+    "3d",
+    "2s"
   ]
 }

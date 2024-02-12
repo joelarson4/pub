@@ -48,11 +48,12 @@
   }
 
   $(function() {
-    var board = Math.floor(Math.random() * 50);
+    var board = Math.floor(Math.random() * 100);
+    var totalScore = 0;
     $.getJSON('./data/board-' + board + '.json') .done(function( data ) {
       var rowWidth = 5;
 
-      $('#target').html('Target: ' + data.score + 'p');
+      $('#scores').html('Target: ' + data.score);
 
       var hands = [];
 
@@ -103,19 +104,27 @@
         ended = true;
         $('#deal .card').addClass('selected');
         handChosen($('.selected'));
+
+        setTimeout(function() {
+          showComputer();
+        }, 2000);
       }
 
       function handChosen(selected) {
+        $('#hands #user h2').show();
         var hand = selected.toArray().map(function(ele) { return ele.getAttribute('data-card'); });
         selected.animate({opacity: 0 },function() {
           selected.remove();
           if($('#deal .card').length == 5) {
-            autoEnd();
+            setTimeout(function() { autoEnd(); }, 500);
           }
         });
 
         var handResult = scoreHand(hand);
-        var html = [`<div class="row"><h2><span class="points">${handResult.score}p</span> ${handResult.descr}</h2>`];
+        totalScore += handResult.score;
+
+        $('#scores').html('Score: ' + totalScore + ' / ' + data.score);
+        var html = [`<div class="row"><h3><span class="points">${handResult.score}p</span> ${handResult.descr}</h3>`];
         hand.sort();
         hand.reverse();
         hand.forEach(function(card, index) {
@@ -127,7 +136,24 @@
         html.push('</div>');
         //log(html)
 
-        $('#picks').append(html.join('\n'));
+        $('#user').append(html.join('\n'));
+      }
+
+      function showComputer() {
+        var html = []
+        data.highest.forEach(function(hand) {
+          html.push(`<div class="row"><h3><span class="points">${hand.score}p</span> ${hand.desc}</h3>`);
+          hand.cards.sort();
+          hand.cards.reverse();
+          hand.cards.forEach(function(card, index) {
+            var chunks = card.split('');
+            var rank = ranks[chunks[0]];
+            var suit = suits[chunks[1]];
+            html.push(`<div class="card" data-card="${card}"><span class="rank">${rank}</span><br/><span class="suit">${suit}</span></div>`);
+          })
+          html.push('</div>');
+        });
+        $('#hands').addClass('split').append('<div id="computer"><h2>Computer</h2>' + html.join('') + '</div>');
       }
 
 
@@ -151,7 +177,7 @@ body {
   padding: 20px;
 }
 
-#picks {
+#hands {
   padding: 0 60px;
 }
 
@@ -169,19 +195,13 @@ body {
   font-size: 10pt;
 }
 
-#picks .row {
-  height: 110px;
-}
 
-.row h2 {
+.row h3 {
   margin: 0px 10px 0px 10px;
 }
-.row h2 .points {
+.row h3 .points {
   color: yellow;
   margin-right: 6px;
-} 
-#picks .card {
-  box-shadow: 0 2px 2px rgba(0,0,0,0.5);
 }
 
 .card {
@@ -205,8 +225,12 @@ body {
   box-shadow: 0 0 20px yellow, inset 0 0 20px cyan;
   border: 2px solid blue;
 }
+ 
+#hands .card {
+  box-shadow: 0 2px 2px rgba(0,0,0,0.5);
+}
 
-#picks .card {
+#hands .card {
   margin: 7px;
   height: 66px;
   width: 48px;
@@ -217,7 +241,7 @@ body {
   font-size: 20pt;
 }
 
-#picks .suit {
+#hands .suit {
   font-size: 15pt;
 }
 
@@ -234,9 +258,38 @@ h1 {
   margin: 0;
 }
 
-#target {
+#scores {
   text-align: center;
   color: yellow;
+}
+
+#hands.split {
+  padding: 0;
+}
+#hands.split h3 {
+  margin: 0 0 0 13px;
+  font-size: 15px;
+}
+
+#hands.split #user,
+#hands.split #computer {
+  max-width: 215px;
+  width: 215px;
+  float: left;
+}
+
+#hands.split .card {
+  margin-right: -20px;
+}
+
+#hands h2 {
+  color: yellow;
+  font-size: 12pt;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
 }
 
 </style>
@@ -244,24 +297,24 @@ h1 {
 <body>
   <div class="table">
     <h1>Five Hands</h1>
-    <div id="target"></div>
+    <div id="scores"></div>
     <div id="deal"></div>
     <div id="divider"></div>
-    <div id="picks"></div>
+    <div id="hands"><div id="user"><h2 class="hidden">Your hand</h2></div></div>
     <div id="divider"></div>
 
 <div id="legend">
 
-<div class="row"><h2 class="hand"><span class="points">10p</span><span class="desc">Royal Flush</span></h2> </div>
-<div class="row"><h2 class="hand"><span class="points">9p</span><span class="desc">Straight Flush</span></h2> </div>
-<div class="row"><h2 class="hand"><span class="points">8p</span><span class="desc">Four of a Kind</span></h2> </div>
-<div class="row"><h2 class="hand"><span class="points">7p</span><span class="desc">Full House</span></h2> </div>
-<div class="row"><h2 class="hand"><span class="points">6p</span><span class="desc">Flush</span></h2> </div>
-<div class="row"><h2 class="hand"><span class="points">5p</span><span class="desc">Straight</span></h2> </div>
-<div class="row"><h2 class="hand"><span class="points">4p</span><span class="desc">Three of a Kind</span></h2> </div>
-<div class="row"><h2 class="hand"><span class="points">3p</span><span class="desc">Two Pair</span></h2> </div>
-<div class="row"><h2 class="hand"><span class="points">2p</span><span class="desc">Pair</span></h2> </div>
-<div class="row"><h2 class="hand"><span class="points">1p</span><span class="desc">High Card</span></h2> </div>
+<div class="row"><h3 class="hand"><span class="points">10p</span><span class="desc">Royal Flush</span></h3> </div>
+<div class="row"><h3 class="hand"><span class="points">9p</span><span class="desc">Straight Flush</span></h3> </div>
+<div class="row"><h3 class="hand"><span class="points">8p</span><span class="desc">Four of a Kind</span></h3> </div>
+<div class="row"><h3 class="hand"><span class="points">7p</span><span class="desc">Full House</span></h3> </div>
+<div class="row"><h3 class="hand"><span class="points">6p</span><span class="desc">Flush</span></h3> </div>
+<div class="row"><h3 class="hand"><span class="points">5p</span><span class="desc">Straight</span></h3> </div>
+<div class="row"><h3 class="hand"><span class="points">4p</span><span class="desc">Three of a Kind</span></h3> </div>
+<div class="row"><h3 class="hand"><span class="points">3p</span><span class="desc">Two Pair</span></h3> </div>
+<div class="row"><h3 class="hand"><span class="points">2p</span><span class="desc">Pair</span></h3> </div>
+<div class="row"><h3 class="hand"><span class="points">1p</span><span class="desc">High Card</span></h3> </div>
 </div>
   </div>
 

@@ -1,88 +1,88 @@
 {
   "board": 15,
-  "score": 31,
+  "score": 27,
   "highest": [
     {
       "cards": [
-        "Qh",
-        "4d",
-        "4c",
-        "4s",
-        "4h"
+        "Ac",
+        "2c",
+        "2d",
+        "2s",
+        "2h"
       ],
       "score": 8,
       "desc": "Four of a Kind"
     },
     {
       "cards": [
-        "Qd",
-        "Qc",
+        "4c",
+        "Jc",
         "Jd",
-        "Jh",
-        "Jc"
+        "Js",
+        "4h"
       ],
       "score": 7,
       "desc": "Full House"
     },
     {
       "cards": [
-        "6d",
-        "6h",
-        "Ks",
-        "Kd",
-        "6c"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "2c",
-        "3s",
-        "3d",
-        "2h",
-        "2s"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "Ac",
         "9s",
-        "5h",
+        "7h",
+        "7d",
+        "7s",
+        "9h"
+      ],
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "Qh",
+        "6c",
+        "Ts",
+        "Qc",
+        "6d"
+      ],
+      "score": 3,
+      "desc": "Two Pair"
+    },
+    {
+      "cards": [
+        "Kh",
+        "Ah",
+        "8c",
         "8d",
-        "8h"
+        "Th"
       ],
       "score": 2,
       "desc": "Pair"
     }
   ],
   "deal": [
-    "Qh",
-    "4d",
     "Ac",
-    "Qd",
-    "Qc",
-    "Jd",
-    "6d",
-    "6h",
     "4c",
-    "Jh",
-    "Ks",
-    "Kd",
-    "4s",
-    "6c",
     "2c",
     "9s",
-    "3s",
-    "5h",
-    "3d",
-    "8d",
     "Jc",
-    "2h",
-    "8h",
+    "Jd",
+    "Qh",
+    "6c",
+    "Ts",
+    "7h",
+    "7d",
+    "2d",
     "2s",
-    "4h"
+    "Kh",
+    "7s",
+    "Js",
+    "Ah",
+    "8c",
+    "8d",
+    "Qc",
+    "2h",
+    "6d",
+    "Th",
+    "4h",
+    "9h"
   ]
 }

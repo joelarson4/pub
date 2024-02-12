@@ -1,88 +1,88 @@
 {
   "board": 27,
-  "score": 29,
+  "score": 26,
   "highest": [
     {
       "cards": [
-        "3s",
-        "2s",
-        "3d",
-        "3h",
-        "2h"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "Jd",
-        "Kc",
-        "Kd",
-        "Kh",
-        "Js"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "6h",
-        "6s",
-        "Th",
-        "6d",
-        "Tc"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "8c",
-        "Qc",
-        "Qs",
-        "Qh",
-        "8s"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
+        "Js",
         "As",
-        "9h",
-        "7s",
-        "4c",
-        "5c"
+        "Ah",
+        "Jh",
+        "Ad"
       ],
-      "score": 1,
-      "desc": "High Card"
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "Qh",
+        "Ts",
+        "Qs",
+        "Th",
+        "Td"
+      ],
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "5d",
+        "9c",
+        "9h",
+        "5s",
+        "9d"
+      ],
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "7s",
+        "4d",
+        "6h",
+        "6d",
+        "4h"
+      ],
+      "score": 3,
+      "desc": "Two Pair"
+    },
+    {
+      "cards": [
+        "3h",
+        "8s",
+        "2c",
+        "2d",
+        "Kc"
+      ],
+      "score": 2,
+      "desc": "Pair"
     }
   ],
   "deal": [
-    "3s",
-    "2s",
-    "Jd",
-    "3d",
+    "7s",
+    "Js",
     "As",
-    "Kc",
+    "Qh",
+    "5d",
+    "Ah",
+    "Ts",
+    "Qs",
+    "9c",
+    "4d",
+    "6h",
+    "6d",
     "3h",
     "9h",
-    "6h",
-    "Kd",
-    "6s",
-    "Th",
-    "8c",
-    "Qc",
-    "2h",
-    "6d",
-    "7s",
-    "Qs",
-    "Qh",
-    "Kh",
-    "4c",
-    "5c",
-    "Tc",
+    "5s",
     "8s",
-    "Js"
+    "4h",
+    "2c",
+    "Th",
+    "2d",
+    "Kc",
+    "9d",
+    "Td",
+    "Jh",
+    "Ad"
   ]
 }

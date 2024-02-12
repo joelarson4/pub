@@ -1,88 +1,88 @@
 {
   "board": 21,
-  "score": 34,
+  "score": 27,
   "highest": [
     {
       "cards": [
-        "Ts",
-        "As",
-        "Qs",
-        "Ks",
-        "Js"
-      ],
-      "score": 10,
-      "desc": "Straight Flush"
-    },
-    {
-      "cards": [
-        "9c",
-        "Tc",
-        "Jc",
-        "7c",
-        "8c"
+        "8d",
+        "Td",
+        "Jd",
+        "9d",
+        "Qd"
       ],
       "score": 9,
       "desc": "Straight Flush"
     },
     {
       "cards": [
-        "3c",
-        "Qh",
-        "3h",
-        "3s",
-        "Qc"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "2c",
-        "2d",
-        "5d",
         "5h",
-        "2s"
+        "5s",
+        "6d",
+        "6c",
+        "6s"
       ],
       "score": 7,
       "desc": "Full House"
     },
     {
       "cards": [
-        "9s",
-        "8s",
+        "Ts",
+        "4d",
+        "Tc",
         "4s",
+        "4h"
+      ],
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "7h",
+        "Js",
         "Ad",
-        "Qd"
+        "As",
+        "Jh"
+      ],
+      "score": 3,
+      "desc": "Two Pair"
+    },
+    {
+      "cards": [
+        "2h",
+        "8s",
+        "3d",
+        "9h",
+        "Kc"
       ],
       "score": 1,
       "desc": "High Card"
     }
   ],
   "deal": [
-    "9s",
-    "8s",
-    "Ts",
-    "9c",
-    "3c",
-    "Tc",
-    "Qh",
-    "2c",
-    "2d",
-    "5d",
-    "Jc",
-    "As",
     "5h",
-    "4s",
-    "3h",
-    "Qs",
-    "3s",
-    "7c",
-    "Qc",
-    "8c",
-    "Ad",
-    "Qd",
-    "Ks",
+    "7h",
+    "8d",
+    "2h",
+    "Ts",
+    "Td",
+    "8s",
+    "5s",
+    "6d",
     "Js",
-    "2s"
+    "6c",
+    "Jd",
+    "6s",
+    "Ad",
+    "4d",
+    "Tc",
+    "9d",
+    "As",
+    "3d",
+    "Qd",
+    "4s",
+    "Jh",
+    "4h",
+    "9h",
+    "Kc"
   ]
 }

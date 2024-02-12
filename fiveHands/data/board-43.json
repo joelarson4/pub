@@ -1,47 +1,47 @@
 {
   "board": 43,
-  "score": 31,
+  "score": 28,
   "highest": [
     {
       "cards": [
-        "2d",
-        "5d",
-        "4d",
-        "6d",
-        "3d"
+        "Ks",
+        "Th",
+        "Tc",
+        "Td",
+        "Ts"
       ],
-      "score": 9,
-      "desc": "Straight Flush"
-    },
-    {
-      "cards": [
-        "7c",
-        "7d",
-        "Ts",
-        "7h",
-        "Td"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "6h",
-        "Qd",
-        "6c",
-        "Qs",
-        "Qh"
-      ],
-      "score": 7,
-      "desc": "Full House"
+      "score": 8,
+      "desc": "Four of a Kind"
     },
     {
       "cards": [
         "Js",
-        "5s",
-        "4s",
-        "2s",
-        "As"
+        "7s",
+        "7d",
+        "Jh",
+        "Jd"
+      ],
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "Qc",
+        "5c",
+        "8c",
+        "Kc",
+        "3c"
+      ],
+      "score": 6,
+      "desc": "Flush"
+    },
+    {
+      "cards": [
+        "5d",
+        "2d",
+        "Kd",
+        "Ad",
+        "3d"
       ],
       "score": 6,
       "desc": "Flush"
@@ -49,40 +49,40 @@
     {
       "cards": [
         "9h",
-        "Ah",
-        "8c",
-        "9c",
-        "2c"
+        "2h",
+        "8s",
+        "Qs",
+        "7h"
       ],
-      "score": 2,
-      "desc": "Pair"
+      "score": 1,
+      "desc": "High Card"
     }
   ],
   "deal": [
-    "2d",
-    "5d",
+    "Ks",
     "Js",
-    "7c",
-    "7d",
-    "Ts",
-    "6h",
+    "7s",
     "9h",
-    "Ah",
-    "5s",
-    "Qd",
-    "7h",
-    "4s",
-    "4d",
-    "6c",
-    "Qs",
-    "Td",
-    "2s",
-    "6d",
+    "Qc",
+    "5c",
     "8c",
-    "As",
-    "9c",
+    "7d",
+    "Th",
+    "Tc",
+    "5d",
+    "2d",
+    "2h",
+    "Kd",
+    "Jh",
+    "Jd",
+    "Ad",
+    "8s",
+    "Qs",
+    "7h",
     "3d",
-    "2c",
-    "Qh"
+    "Kc",
+    "Td",
+    "3c",
+    "Ts"
   ]
 }

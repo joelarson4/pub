@@ -1,88 +1,88 @@
 {
   "board": 41,
-  "score": 27,
+  "score": 26,
   "highest": [
     {
       "cards": [
-        "2c",
-        "5s",
-        "5c",
-        "5h",
-        "5d"
-      ],
-      "score": 8,
-      "desc": "Four of a Kind"
-    },
-    {
-      "cards": [
-        "Ah",
-        "Jh",
-        "As",
-        "Js",
-        "Jd"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "4d",
-        "4c",
-        "6d",
-        "6h",
-        "6c"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
         "9d",
-        "2s",
-        "2d",
-        "Qh",
-        "Qd"
+        "7h",
+        "9h",
+        "9c",
+        "7d"
+      ],
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "Kd",
+        "3s",
+        "3d",
+        "3h",
+        "Ks"
+      ],
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "Ad",
+        "Qs",
+        "Ac",
+        "Ah",
+        "Qc"
+      ],
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "4s",
+        "6c",
+        "2h",
+        "6s",
+        "2c"
       ],
       "score": 3,
       "desc": "Two Pair"
     },
     {
       "cards": [
-        "8s",
-        "Tc",
-        "Kd",
-        "7h",
-        "7c"
+        "8h",
+        "Th",
+        "Jc",
+        "Js",
+        "Kc"
       ],
       "score": 2,
       "desc": "Pair"
     }
   ],
   "deal": [
-    "2c",
-    "5s",
-    "5c",
-    "Ah",
-    "Jh",
-    "As",
-    "5h",
     "9d",
-    "4d",
-    "Js",
-    "Jd",
-    "4c",
-    "8s",
-    "2s",
-    "2d",
-    "Tc",
-    "6d",
-    "Qh",
-    "Qd",
-    "Kd",
     "7h",
-    "6h",
-    "7c",
+    "Kd",
+    "3s",
+    "Ad",
+    "4s",
+    "8h",
+    "Qs",
+    "3d",
+    "9h",
+    "Th",
     "6c",
-    "5d"
+    "Ac",
+    "Ah",
+    "2h",
+    "3h",
+    "6s",
+    "Jc",
+    "2c",
+    "9c",
+    "Js",
+    "Ks",
+    "Qc",
+    "7d",
+    "Kc"
   ]
 }

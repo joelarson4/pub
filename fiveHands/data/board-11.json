@@ -1,88 +1,88 @@
 {
   "board": 11,
-  "score": 31,
+  "score": 27,
   "highest": [
     {
       "cards": [
-        "Kh",
-        "9h",
-        "Jh",
-        "Th",
-        "Qh"
-      ],
-      "score": 9,
-      "desc": "Straight Flush"
-    },
-    {
-      "cards": [
-        "Js",
-        "7s",
-        "Jd",
-        "7c",
-        "7h"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "6d",
-        "6c",
-        "4h",
-        "4c",
-        "4s"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "9d",
-        "9s",
+        "As",
+        "Ks",
         "Ac",
-        "Ad",
-        "As"
+        "Ah",
+        "Kh"
       ],
       "score": 7,
       "desc": "Full House"
     },
     {
       "cards": [
-        "8s",
-        "Kc",
-        "2c",
-        "Qs",
-        "3s"
+        "9h",
+        "5h",
+        "9c",
+        "5d",
+        "9s"
       ],
-      "score": 1,
-      "desc": "High Card"
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "7c",
+        "8d",
+        "8h",
+        "7d",
+        "8c"
+      ],
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "Qs",
+        "6s",
+        "Jd",
+        "Qd",
+        "Jh"
+      ],
+      "score": 3,
+      "desc": "Two Pair"
+    },
+    {
+      "cards": [
+        "4s",
+        "2c",
+        "6h",
+        "4d",
+        "2d"
+      ],
+      "score": 3,
+      "desc": "Two Pair"
     }
   ],
   "deal": [
-    "8s",
-    "Js",
-    "Kc",
-    "2c",
-    "7s",
-    "6d",
-    "Kh",
-    "6c",
-    "4h",
-    "Qs",
-    "9d",
-    "Jd",
-    "9s",
-    "Ac",
-    "3s",
-    "7c",
-    "7h",
-    "Ad",
     "As",
+    "Ks",
     "9h",
-    "4c",
+    "5h",
+    "7c",
+    "Ac",
+    "8d",
+    "Qs",
+    "6s",
+    "9c",
+    "Jd",
+    "Qd",
+    "Ah",
+    "8h",
     "4s",
+    "5d",
+    "Kh",
     "Jh",
-    "Th",
-    "Qh"
+    "7d",
+    "8c",
+    "9s",
+    "2c",
+    "6h",
+    "4d",
+    "2d"
   ]
 }

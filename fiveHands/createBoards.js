@@ -4,9 +4,9 @@ var poker = require('pokersolver');
 var { log, SeededRandom } = require('sweet-potato');
 const percom = require("percom");
 
-for(var board = 0; board < 50; board++) {
+for(var board = 0; board < 100; board++) {
   log('Creating ' + board);
-  var rand = new SeededRandom(board + 0.5);//.substring(0,15));
+  var rand = new SeededRandom(board + 0.65);//.substring(0,15));
 
   function scoreHand(hand) {
     var handResult = poker.Hand.solve(hand);

@@ -1,88 +1,88 @@
 {
   "board": 37,
-  "score": 27,
+  "score": 29,
   "highest": [
     {
       "cards": [
-        "Jc",
-        "Qc",
-        "8c",
-        "9c",
-        "Tc"
-      ],
-      "score": 9,
-      "desc": "Straight Flush"
-    },
-    {
-      "cards": [
-        "3c",
-        "3s",
-        "2c",
-        "2s",
-        "3h"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "4h",
-        "4d",
-        "8s",
-        "8h",
-        "8d"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "Ah",
+        "7h",
         "9s",
-        "9h",
-        "Kh",
-        "Ad"
+        "7d",
+        "7c",
+        "7s"
       ],
-      "score": 3,
-      "desc": "Two Pair"
+      "score": 8,
+      "desc": "Four of a Kind"
     },
     {
       "cards": [
         "2d",
         "Jh",
-        "6s",
-        "5d",
-        "Qs"
+        "Js",
+        "Jc",
+        "Jd"
       ],
-      "score": 1,
-      "desc": "High Card"
+      "score": 8,
+      "desc": "Four of a Kind"
+    },
+    {
+      "cards": [
+        "Th",
+        "6h",
+        "4h",
+        "3h",
+        "Kh"
+      ],
+      "score": 6,
+      "desc": "Flush"
+    },
+    {
+      "cards": [
+        "4s",
+        "2c",
+        "5d",
+        "6s",
+        "3c"
+      ],
+      "score": 5,
+      "desc": "Straight"
+    },
+    {
+      "cards": [
+        "Kd",
+        "Qc",
+        "As",
+        "Td",
+        "Ad"
+      ],
+      "score": 2,
+      "desc": "Pair"
     }
   ],
   "deal": [
-    "3c",
-    "3s",
-    "2c",
-    "4h",
-    "4d",
-    "Ah",
-    "Jc",
-    "Qc",
-    "2s",
+    "7h",
     "9s",
-    "9h",
-    "3h",
-    "Kh",
     "2d",
-    "Jh",
-    "8c",
-    "9c",
-    "8s",
-    "6s",
+    "Kd",
+    "Th",
+    "4s",
+    "6h",
+    "Qc",
+    "2c",
+    "7d",
+    "4h",
     "5d",
-    "8h",
+    "Jh",
+    "6s",
+    "As",
+    "3h",
+    "Td",
+    "Kh",
     "Ad",
-    "8d",
-    "Qs",
-    "Tc"
+    "Js",
+    "Jc",
+    "7c",
+    "7s",
+    "3c",
+    "Jd"
   ]
 }

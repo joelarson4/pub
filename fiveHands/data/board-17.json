@@ -1,88 +1,88 @@
 {
   "board": 17,
-  "score": 29,
+  "score": 27,
   "highest": [
     {
       "cards": [
-        "Jc",
-        "6d",
-        "6c",
-        "6s",
-        "6h"
-      ],
-      "score": 8,
-      "desc": "Four of a Kind"
-    },
-    {
-      "cards": [
-        "Ad",
-        "9c",
-        "9s",
-        "As",
-        "Ac"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "Qc",
-        "3h",
-        "3d",
-        "Qd",
-        "3c"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "Ts",
         "9d",
-        "Kd",
-        "Qs",
-        "Jh"
+        "7d",
+        "Td",
+        "6d",
+        "8d"
       ],
-      "score": 5,
-      "desc": "Straight"
+      "score": 9,
+      "desc": "Straight Flush"
     },
     {
       "cards": [
-        "Kc",
-        "8c",
-        "Th",
-        "2c",
-        "8h"
+        "2d",
+        "Qc",
+        "Qs",
+        "2h",
+        "Qd"
       ],
-      "score": 2,
-      "desc": "Pair"
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "8c",
+        "8s",
+        "Ac",
+        "Ad",
+        "As"
+      ],
+      "score": 7,
+      "desc": "Full House"
+    },
+    {
+      "cards": [
+        "Ks",
+        "Kh",
+        "3c",
+        "Ts",
+        "Tc"
+      ],
+      "score": 3,
+      "desc": "Two Pair"
+    },
+    {
+      "cards": [
+        "5s",
+        "3d",
+        "4h",
+        "6h",
+        "9h"
+      ],
+      "score": 1,
+      "desc": "High Card"
     }
   ],
   "deal": [
-    "Jc",
-    "Ad",
-    "9c",
-    "9s",
-    "Qc",
-    "As",
-    "Ac",
-    "6d",
-    "3h",
-    "3d",
-    "6c",
-    "Ts",
-    "9d",
-    "Qd",
-    "Kd",
-    "Kc",
+    "2d",
     "8c",
+    "Qc",
+    "8s",
+    "Ks",
+    "9d",
+    "Kh",
     "3c",
-    "Th",
+    "Ac",
+    "Ts",
+    "5s",
     "Qs",
-    "6s",
-    "Jh",
-    "2c",
+    "Ad",
+    "2h",
+    "7d",
+    "Td",
+    "Tc",
+    "3d",
+    "4h",
     "6h",
-    "8h"
+    "Qd",
+    "6d",
+    "As",
+    "9h",
+    "8d"
   ]
 }

@@ -1,88 +1,88 @@
 {
   "board": 46,
-  "score": 30,
+  "score": 29,
   "highest": [
     {
       "cards": [
-        "3c",
-        "6s",
-        "6h",
-        "6c",
-        "3s"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "Qh",
-        "Tc",
-        "Th",
-        "Ts",
-        "Qc"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "As",
-        "2d",
-        "2c",
-        "Ad",
-        "Ac"
-      ],
-      "score": 7,
-      "desc": "Full House"
-    },
-    {
-      "cards": [
-        "4s",
-        "Jd",
         "Jh",
-        "4h",
-        "Jc"
+        "9h",
+        "Qh",
+        "Kh",
+        "Th"
+      ],
+      "score": 9,
+      "desc": "Straight Flush"
+    },
+    {
+      "cards": [
+        "9d",
+        "2d",
+        "2s",
+        "9c",
+        "2h"
       ],
       "score": 7,
       "desc": "Full House"
     },
     {
       "cards": [
-        "Kh",
-        "9c",
+        "3d",
+        "Td",
         "7d",
-        "7h",
-        "5c"
+        "6d",
+        "Jd"
       ],
-      "score": 2,
-      "desc": "Pair"
+      "score": 6,
+      "desc": "Flush"
+    },
+    {
+      "cards": [
+        "6s",
+        "Ks",
+        "Ts",
+        "Js",
+        "As"
+      ],
+      "score": 6,
+      "desc": "Flush"
+    },
+    {
+      "cards": [
+        "7c",
+        "Qc",
+        "5c",
+        "4c",
+        "Kd"
+      ],
+      "score": 1,
+      "desc": "High Card"
     }
   ],
   "deal": [
-    "Kh",
-    "3c",
-    "9c",
-    "Qh",
-    "6s",
-    "Tc",
-    "As",
-    "6h",
-    "2d",
-    "4s",
-    "Th",
-    "Jd",
-    "Ts",
-    "7d",
-    "7h",
+    "3d",
+    "9d",
     "Jh",
-    "4h",
-    "2c",
-    "5c",
-    "6c",
+    "7c",
     "Qc",
-    "3s",
-    "Ad",
-    "Jc",
-    "Ac"
+    "9h",
+    "2d",
+    "Qh",
+    "5c",
+    "6s",
+    "Ks",
+    "Td",
+    "4c",
+    "7d",
+    "6d",
+    "2s",
+    "Ts",
+    "9c",
+    "Kh",
+    "Js",
+    "Jd",
+    "Kd",
+    "Th",
+    "As",
+    "2h"
   ]
 }
