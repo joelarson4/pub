@@ -53,6 +53,9 @@ h1 {
   font-size: 32px;
   background: rgba(18,18,18,0.9);
 }
+.h1-buffer {
+  height: 60px;
+}
 
 h2 {
   font-size: 24px;
@@ -62,8 +65,9 @@ section {
   padding: 30px 20px 20px 20px;
 }
 
-.h1-buffer {
-  height: 40px;
+section p {
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .btn {
@@ -81,6 +85,7 @@ section {
 
 #authButton {
   display: none;
+  text-align: center;;
 }
 
 .album,
