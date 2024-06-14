@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Albums You Missed</title>
+    <meta name="description" content="An introduction to interacting with the Spotify API">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://sp-bootstrap.global.ssl.fastly.net/8.0.0/sp-bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="public/style.css">
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>  
+</head>
+<body>
+  
+    <h1>Albums You Missed</h1>
+  
+    <section id="error">
+      <h2>
+        Uh oh...
+      </h2>
+      <p>
+        There was a problem.
+      </p>
+    </section>
+  
+    <main>
+  <section id="albums">
+    <div id="loadContainer">
+      <div id="loadMessage">
+        loading...
+      </div>
+      <button id="loadMore">
+        load more <span>☞</span>
+      </button>
+    </div>
+  </section>
+
+  <div id="templates" style="display: none;">
+    <div data-template-id="album">
+      <div class="album" data-album-id="((id))">
+        <img src="((image))" class="image">         
+        <h2 class="name">
+          ((name))
+        </h2>
+        <h3 class="artist">
+          ((artistNames))
+        </h2>            
+        <p>
+          ((total_tracks)) tracks released ((release_date))
+        </p>
+        <div class="heart">
+          ♡
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+</main>
+
+<script>
+$(function() {
+  var token = localStorage.getItem('authToken');
+  var expires = Number(localStorage.getItem('authExpires'));
+  if(expires < new Date().getTime()) {
+    showError('Your authentication has expired.');
+    showAuthButton();
+    return;
+  }
+  
+  function loadState(loading, message) {
+    if(loading) {
+      $('#loadContainer').addClass('loading').show();
+      $('#loadMessage').html(message).show();
+      $('#loadMore').hide();
+    } else {
+      $('#loadContainer').removeClass('loading')
+      $('#loadMessage').html('').hide();
+      $('#loadMore').show();
+    }
+  }
+  loadState(true, 'starting up...');
+  
+  var spotifyApi = new SpotifyWebApi();
+  spotifyApi.setAccessToken(token);
+
+  spotifyApi.getRecommendations({
+      //
+    },
+    function(err, data) {
+      if(err) {
+        log(err);
+        throw new Error(err);
+      }
+      
+      log(data);
+    }
+  );
+
+
+  }, false);  
+</script>
+
+
+    <section id="authButton">
+      <a href="authStart">
+        <button class="btn btn-lg btn-primary">Authenticate with Spotify</button>
+      </a>
+    </section>        
+  
+    <footer>
+       
+    </footer>
+
+    <!-- Your web-app is https, so your scripts need to be too -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js" integrity="sha512-E1dSFxg+wsfJ4HKjutk/WaCzK7S2wv1POn1RRPGh8ZK+ag9l244Vqxji3r6wgz9YBf6+vhQEYJZpSjqWFPg9gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="public/spotify-web-api.js"></script>
+    <script src="public/client.js"></script>
+
+</body>
+</html>
