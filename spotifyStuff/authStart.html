@@ -35,12 +35,14 @@
 
 <script>
   var scope = 'user-library-read user-library-modify';
+  var redirectUri = document.location.href.split('/authStart')[0] + '/authCallback';
+  alert(redirectUri);
   var authUrl = 'https://accounts.spotify.com/authorize';
   authUrl += '?response_type=token';
   authUrl += '&show_dialog=true';
   authUrl += '&client_id=' + encodeURIComponent('0d21a24054c145a0aa6022b156c1f283');
   authUrl += '&scope=' + encodeURIComponent(scope);
-  authUrl += '&redirect_uri=' + encodeURIComponent('http://127.0.0.1:8080/static/authCallback');
+  authUrl += '&redirect_uri=' + encodeURIComponent(redirectUri);
   
   document.location.href = authUrl;
 </script>
