@@ -102,6 +102,11 @@ section p {
   border-radius: 6px;
 }
 
+#loadContainer.initial {
+  margin: 0 auto;
+  float: none;
+}
+
 .album:hover {
   background: #222;
   cursor: pointer;

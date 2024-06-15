@@ -29,7 +29,7 @@
   
     <main>
   <section id="albums">
-    <div id="loadContainer">
+    <div id="loadContainer" class="initial">
       <div id="loadMessage">
         loading...
       </div>
@@ -258,6 +258,7 @@ $(function() {
   });
 
   function render(album) {
+    $('#loadContainer').removeClass('initial');
     album.image = album.images[0].url;
     album.artistNames = album.artists.map(function(a) { return a.name; }).join(', ');
     $(templates.album(album)).insertBefore('#loadContainer');
