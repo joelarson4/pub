@@ -67,6 +67,7 @@ $(function() {
   var token = localStorage.getItem('authToken');
   var expires = Number(localStorage.getItem('authExpires'));
   if(expires < new Date().getTime()) {
+    $('main').remove();
     showError('Your authentication has expired.');
     showAuthButton();
     return;
@@ -100,7 +101,6 @@ $(function() {
   }
   loadTemplates();
 
-
   function addAlbum(album, addedAt) {
     album.artists.forEach(function(artist, index) {
       artist.mostRecentSave = artist.mostRecentSave > addedAt > 0 ? artist.mostRecentSave : addedAt;
@@ -125,18 +125,18 @@ $(function() {
     albums = existingAlbums.data;
     artists = existingArtists.data;
     if(existingAlbums.saved && existingAlbums.saved + (1000 * 60 * 60) > new Date().getTime()) {
-      log([existingAlbums.saved + (1000 * 60 * 60), new Date().getTime()])
+      //log([existingAlbums.saved + (1000 * 60 * 60), new Date().getTime()])
       log('Using current localStorage data');
       createRecommendations();
       return;
     }
 
-    var pageSize = 50;
 
     function next(offset) {
       log('Getting page offset ' + offset);
+      var loadPageSize = 40 + Math.round(10 * Math.random());
       spotifyApi.getMySavedAlbums({
-        limit : pageSize,
+        limit : loadPageSize,
         offset: offset
       },
       function(err, data) {
@@ -165,15 +165,47 @@ $(function() {
         save(true);
 
         if(savedEverythingOlder) {
+          loadCounter.kill();
           createRecommendations();
         } else {
-          return next(offset + pageSize);
+          return next(offset + loadPageSize);
         }
       });
     }
 
     next(0);
-  }    
+  }
+
+  function LoadCounter() {
+    var that = this;
+    this.albums = 0;
+    this.artists = 0;
+    var countRange = 11;
+    var updateAcrossMaxMs = 900;
+    this.updateCount = function(albums, artists) {
+     this.targetAlbums = albums;
+      this.targetArtists = artists;
+    }
+    this.tid = setInterval(function() {
+      if(that.dead) return;
+      if(Math.random() < 0.5) return;
+      var albumDiff = that.targetAlbums - that.albums;
+      var artistDiff = that.targetArtists - that.artists;
+      if(albumDiff <= 0 || isNaN(albumDiff)) return;
+      //log(that)
+      var incAlbum = Math.min(Math.floor(5 * Math.random()), albumDiff);
+      var incArtist = Math.min(Math.floor(5 * Math.random()), artistDiff);
+      that.albums += incAlbum;
+      that.artists += incArtist;
+      loadState(true, 'retrieving your library...<br><p>('  + that.albums + ' albums from ' + that.artists + ' artists)</p>');
+    }, 33);
+    this.kill = function() {
+      this.dead = true;
+      clearInterval(that.tid);
+    }
+  }
+  let loadCounter = new LoadCounter();
+  window.loadCounter = loadCounter;
 
   function save(loading) {
     log('saving ' + Object.keys(albums).length + ' albums');
@@ -181,7 +213,7 @@ $(function() {
     log('saving ' + Object.keys(artists).length + ' artists');
     
     if(loading) {
-      loadState(true, 'retrieving your library...<br>('  + Object.keys(albums).length + ' albums from ' + Object.keys(artists).length + ' artists)');
+      loadCounter.updateCount(Object.keys(albums).length, Object.keys(artists).length);
     }
 
     var albumData = JSON.stringify({'saved': new Date().getTime(), data: albums, x:1 });
@@ -196,12 +228,13 @@ $(function() {
   var missedAlbums = { };
 
   function createRecommendations() {
-    loadState(true, 'getting more recommendations...');
+    loadCounter.kill();
+    loadState(true, 'getting recommendations...');
     neededRecommendations += 5; 
     var yearAgo = new Date(new Date().getTime() - 365 * 24 * 60 * 60 * 1000).toISOString();
 
     var artistsYearAgo = _.filter(artists, function(artist) {
-      console.log(artist.mostRecentSave + ' vs ' + yearAgo + ' = ' + artist.mostRecentSave.localeCompare(yearAgo));
+      //console.log(artist.mostRecentSave + ' vs ' + yearAgo + ' = ' + artist.mostRecentSave.localeCompare(yearAgo));
       return artist.mostRecentSave.localeCompare(yearAgo) < 0;
     });
 
