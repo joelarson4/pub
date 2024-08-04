@@ -1,0 +1,206 @@
+body {
+  font-family: Mulish, sans-serif;
+  background: rgb(15,205,15) linear-gradient(0deg, rgba(15,205,15,1) 0%, rgba(0,100,0,1) 100%);
+}
+
+button {
+  font-family: Mulish, sans-serif;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+*  {
+  box-sizing: border-box;
+}
+
+#frame {
+  position: relative;
+  box-sizing: border-box;
+  height: 960px;
+  width: 480px;
+}
+
+.fullFrame {
+  height: 100%;
+  width: 100%;
+  padding: 30px;
+}
+
+#welcome {
+  margin: 50px;
+}
+
+#welcome h1 {
+  font-size: 70px;
+  margin: 100px 0;
+}
+
+#hands {
+  padding: 0 60px;
+}
+
+#divider {
+  margin-bottom: 24px;
+  clear: both;
+  height: 20px;
+  border-bottom: 4px solid darkgreen;
+}
+
+.row {
+  clear: both;
+  display: block;
+  float: none;
+  font-size: 12pt;
+}
+
+.row h3 {
+  margin: 0px 10px 0px 0px;
+  font-size: 12pt;
+}
+
+.row h3 .points {
+  padding-right: 12px;
+}
+
+.card {
+  float: left;
+  box-sizing: border-box;
+  cursor: pointer;
+  background: white;
+  margin: 10px;
+  height: 88px;
+  width: 63px;
+  border: 2px solid lightgrey;
+  box-shadow: 0 3px 3px rgba(0,0,0,0.8);
+  border-radius: 5px;
+  text-align: center;
+  font-size: 25pt;
+  font-family: Abril Fatface, serif;
+  padding-top: 2px;
+}
+
+.card.selected {
+  box-shadow: 0 0 20px yellow, inset 0 0 20px cyan;
+  border: 2px solid blue;
+}
+ 
+#hands .card {
+  box-shadow: 0 2px 2px rgba(0,0,0,0.5);
+}
+
+#hands .card {
+  margin: 7px;
+  height: 66px;
+  width: 48px;
+  font-size: 18px;
+}
+
+.suit {
+  font-size: 20pt;
+}
+
+#hands .suit {
+  font-size: 15pt;
+}
+
+#help {
+  position: absolute;
+  z-index: 1;
+  top: 140px;
+  left: 80px;
+  width: 280px;
+  padding: 10px 20px 30px;
+  background: #eee;
+  border-radius: 2px;
+  box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+button.large-button {
+  border: 0;
+  border-radius: 100px;
+  padding: 10px 25px;
+  margin: 0 10px;
+  background: rgb(0, 0, 210);
+  color: rgb(255, 255, 72);
+  font-size: 25px;
+}
+
+.little-button {
+  position: absolute;
+  right: 5px;
+  top: 10px;
+  cursor: pointer;
+  border: 0;
+  padding: 0 5px;
+  background: transparent;
+}
+
+#help ul {
+  margin-top: 0;
+  padding-inline-start: 19px;
+}
+
+#help .points {
+  width: 40px;
+  text-align: right;
+  display: inline-block;
+  color: green;
+  font-weight: bold;
+}
+
+#help h2 {
+  padding: 0;
+  margin-bottom: 5px;
+  font-family: Abril Fatface, serif;
+  font-size: 16px;
+}
+
+h1 {
+  font-family:  Abril Fatface, serif;;
+  text-align: center;
+  color: yellow;
+  text-shadow: 0 2px 1px rgba(0,0,0,0.8);
+  margin: 0;
+}
+
+#scores {
+  text-align: center;
+  color: yellow;
+}
+
+#hands.split {
+  padding: 0;
+}
+#hands.split h3 {
+  margin: 0 0 0 13px;
+  font-size: 12px;
+}
+
+#hands.split #user,
+#hands.split #computer {
+  max-width: 215px;
+  width: 215px;
+  float: left;
+}
+
+#hands.split .card {
+  margin-right: -20px;
+}
+
+
+#hands h2 {
+  color: yellow;
+  font-size: 12pt;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.center {
+  text-align: center;
+}

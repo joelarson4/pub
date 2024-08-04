@@ -88,6 +88,8 @@ $(function() {
   
   var spotifyApi = new SpotifyWebApi();
   spotifyApi.setAccessToken(token);
+  window.spotifyApi = spotifyApi;
+  log(window.spotifyApi);
 
   var albums = {};
   var artists = {};
