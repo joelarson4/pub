@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Albums You Missed</title>
+    <meta name="description" content="An introduction to interacting with the Spotify API">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://sp-bootstrap.global.ssl.fastly.net/8.0.0/sp-bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="public/style.css">
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>  
+</head>
+<body><div class="app">
+    <header><h1>Albums You Missed</h1></header>
+  
+    <section class="h1-buffer">&nbsp;</section>
+    
+    <section id="error">
+      <h2>
+        Uh oh...
+      </h2>
+      <p>
+        There was a problem.
+      </p>
+    </section>
+  
+    <main>
+  <style>
+    #albums.game .album {
+      width: 140px;
+      height: 140px;
+      max-height: 140px;
+      min-height: 140px;
+      margin: 5px;
+      padding: 5px;
+    }
+
+  </style>
+  <section id="albums" class="game">
+    <div id="loadContainer" class="initial">
+      <div id="loadMessage">
+        loading...
+      </div>
+      <button id="loadMore">
+        load more <span>☞</span>
+      </button>
+    </div>
+  </section>
+
+  <div id="templates" style="display: none;">
+    <div data-template-id="album">
+      <div class="album" data-album-id="((id))" title="((name)) by ((artistName))">
+        <img src="((image))" class="image" style="width: 128px; height: 128px;">         
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+$(function() {
+  var token = localStorage.getItem('authToken');
+  var expires = Number(localStorage.getItem('authExpires'));
+  if(expires < new Date().getTime()) {
+    showError('Your authentication has expired.');
+    showAuthButton();
+    return;
+  }
+  
+  function loadState(loading, message) {
+    if(loading) {
+      $('#loadContainer').addClass('loading');
+      $('#loadMessage').html(message).show();
+      $('#loadMore').hide();
+    } else {
+      $('#loadContainer').removeClass('loading');
+      $('#loadMessage').html('').hide();
+      $('#loadMore').show();
+    }
+  }
+  loadState(true, 'starting up...');
+  
+  var spotifyApi = new SpotifyWebApi();
+  spotifyApi.setAccessToken(token);
+  window.spotifyApi =spotifyApi;
+
+  var albums = {};
+  var artists = {};
+  var templates = {};
+
+  function loadTemplates() {
+    var templateSource = $('#templates [data-template-id]').toArray();
+    templateSource.forEach(function(source) {
+      templates[source.getAttribute('data-template-id')] = Handlebars.compile(source.innerHTML.replaceAll('((','\{\{').replaceAll('))','\}\}') ); 
+    });
+  }
+  loadTemplates();
+
+  function loadSavedAlbums() {    
+    var existingAlbums = JSON.parse(localStorage.getItem('albumData') || '{ "data": {} }');
+    var existingArtists = JSON.parse(localStorage.getItem('artistData') || '{ "data": {} }');
+    albums = existingAlbums.data;
+    artists = existingArtists.data;
+  }
+
+  function main() {
+    loadSavedAlbums();
+
+    let artistNameRand = {};
+
+    let albumsArr = Object.values(albums);
+    albumsArr = albumsArr.filter(function(album) {
+      if(album.artists.length !== 1) return;
+      if(album.total_tracks <= 5) return;
+      if(album.album_type !== 'album') return;
+      album.artistName = album.artists[0].name || artists[album.artists[0]].name;
+      album.artistRand = (artistNameRand[album.artistName] || Math.random().toString(16));
+      artistNameRand[album.artistName] = album.artistRand;
+      return true;
+    })
+    albumsArr = shuffle(albumsArr);
+    albumsArr.sort(function(a, b) { 
+      return a.artistRand.localeCompare(b.artistRand);
+      });
+    let albumsTwoByArtist = [];
+    let index = 1;
+    let alreadyIncludedArtist = {};
+    while(index < albumsArr.length) {
+      if(albumsArr[index].artistName == albumsArr[index - 1].artistName && ! alreadyIncludedArtist[albumsArr[index].artistName]) {
+        albumsTwoByArtist.push(albumsArr[index]);
+        albumsTwoByArtist.push(albumsArr[index - 1]);
+        alreadyIncludedArtist[albumsArr[index].artistName] = 1;
+      }
+      index++;
+    }
+    albumsArr = albumsTwoByArtist;
+    let newOrder = [];
+
+    let subset = albumsArr.slice(0, 7 * 3);
+    subset = shuffle(subset);
+
+    subset.forEach(function(album) {
+      log(album);
+      render(album);
+    });    
+  }
+
+  /*
+
+
+  function loadGenreAlbums() {
+    let genre = 'rock';
+    loadState(true, 'retrieving ' + genre + ' albums...');
+
+    var pageSize = 100;
+
+    spotifyApi.getRecommendations({
+        limit : 100,
+        market: 'US',
+        seed_genres: 'rock',
+        min_popularity: 50
+      },
+      function(err, data) {
+        if(err) {
+          log(err);
+          throw new Error(err);
+        }
+        log(data);
+
+        data.tracks.forEach(function(item) {
+          if(item.artists.length > 1) return;
+          if(item.album.name.indexOf('Deluxe') > -1 || item.album.name.indexOf('Extended') > -1
+             || item.album.name.indexOf('Expanded') > -1) return; 
+          if(item.album.tracks < 5) return;
+          addAlbum(item.album, item.artists[0]);
+        });
+
+        renderAlbums();      
+      }
+    );
+  }    
+
+  function addAlbum(album, artist) {
+    album.artist = artist.id;
+    album.artistName = artist.name;
+    delete album.available_markets;
+    delete album.tracks;
+    album.image = album.images.pop();
+    delete album.images;
+    delete album.copyrights;
+    albums[album.id] = album;  
+    artists[artist.id] = artist;    
+  }
+
+  function renderAlbums() {
+    loadState(true, 'blah blah');
+
+    let albumsArr = Object.values(albums);
+    albumsArr.sort(function(a, b) { log(a); return a.artistName.localeCompare(b.artistName); });
+    let albumsTwoByArtist = [];
+    let index = 1;
+    let alreadyIncludedArtist = {};
+    while(index < albumsArr.length) {
+      if(albumsArr[index].artistName == albumsArr[index - 1].artistName && ! alreadyIncludedArtist[albumsArr[index].artistName]) {
+        albumsTwoByArtist.push(albumsArr[index]);
+        albumsTwoByArtist.push(albumsArr[index - 1]);
+        alreadyIncludedArtist[albumsArr[index].artistName] = 1;
+      }
+      index++;
+    }
+    albumsArr = albumsTwoByArtist;
+
+    albumsArr.forEach(function(album) {
+      log(album);
+      render(album);
+    });
+  }
+
+  */
+
+  $('#loadContainer').on('click', function() {
+    loadState(true, 'getting more recommendations...');
+    createRecommendations();
+  });
+
+  function render(album) {
+    $('#loadContainer').removeClass('initial');
+    log(album);
+    album.image = Array.isArray(album.images) ? album.images[0].url : album.image.url;
+    $(templates.album(album)).insertBefore('#loadContainer');
+
+    $('[data-album-id="' + album.id + '"]').on('click', function(ele) {
+      //DIFFERENT ACTION
+    });
+  }
+
+  main();
+  }, false);  
+</script>
+
+
+    <section id="authButton">
+      <a href="authStart">
+        <button class="btn btn-lg btn-primary">Authenticate with Spotify</button>
+      </a>
+    </section>        
+  
+    <footer>
+       
+    </footer>
+
+    <!-- Your web-app is https, so your scripts need to be too -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js" integrity="sha512-E1dSFxg+wsfJ4HKjutk/WaCzK7S2wv1POn1RRPGh8ZK+ag9l244Vqxji3r6wgz9YBf6+vhQEYJZpSjqWFPg9gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="public/spotify-web-api.js"></script>
+    <script src="public/client.js"></script>
+
+</div></body>
+</html>

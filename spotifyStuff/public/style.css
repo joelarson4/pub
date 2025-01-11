@@ -26,7 +26,7 @@ body {
 }
 
 .app {
-  max-width: 1200px;
+  max-width: 1110px;
   margin: 0 auto;
 }
 
@@ -38,7 +38,7 @@ header, h1, h2 {
 }
 header {
   background: rgba(18,18,18,0.9);
-  max-width: 1200px;
+  max-width: 1110px;
   margin: 0;
   width: 100%;
   padding: 20px 20px;
@@ -63,6 +63,14 @@ h2 {
 
 section {
   padding: 30px 20px 20px 20px;
+}
+
+section#instructions {
+  padding: 50px 20px 0px 20px;
+}
+
+section#albums {
+  padding-top: 20px;
 }
 
 section p {

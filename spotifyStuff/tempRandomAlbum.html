@@ -29,7 +29,7 @@
   
     <main>
   <section id="instructions">
-    <p style="text-align: center;">Click on albums to add them to your library.</p>
+    <p style="text-align: center;">Click on album to play it.</p>
   </section>
   <section id="albums">
     <div id="loadContainer" class="initial">
@@ -93,6 +93,7 @@ $(function() {
   window.spotifyApi =spotifyApi;
 
   var albums = {};
+  var albumsArr = [];
   var artists = {};
   var templates = {};
 
@@ -118,20 +119,18 @@ $(function() {
     album.image = album.images.pop();
     delete album.images;
     delete album.copyrights;
-    albums[album.id] = album;      
+    albums[album.id] = album;   
   }
 
   function loadSavedAlbums() {
     loadState(true, 'retrieving your library...');
     
     var existingAlbums = JSON.parse(localStorage.getItem('albumData') || '{ "data": {} }');
-    var existingArtists = JSON.parse(localStorage.getItem('artistData') || '{ "data": {} }');
     albums = existingAlbums.data;
-    artists = existingArtists.data;
     if(existingAlbums.saved && existingAlbums.saved + (1000 * 60 * 60) > new Date().getTime()) {
       log([existingAlbums.saved + (1000 * 60 * 60), new Date().getTime()])
       log('Using current localStorage data');
-      createRecommendations();
+      createOptions();
       return;
     }
 
@@ -157,7 +156,7 @@ $(function() {
 
         if(data.items.length == 0) {
           log('Done loading');
-          createRecommendations();
+          createOptions();
           return;
         }
 
@@ -165,11 +164,10 @@ $(function() {
           addAlbum(item.album, item.added_at);
         });
 
-
         save(true);
 
-        if(savedEverythingOlder) {
-          createRecommendations();
+        if(savedEverythingOlder) {       
+          createOptions();
         } else {
           return next(offset + pageSize);
         }
@@ -182,95 +180,55 @@ $(function() {
   function save(loading) {
     log('saving ' + Object.keys(albums).length + ' albums');
     
-    log('saving ' + Object.keys(artists).length + ' artists');
-    
     if(loading) {
       loadState(true, 'retrieving your library...<br>('  + Object.keys(albums).length + ' albums from ' + Object.keys(artists).length + ' artists)');
     }
 
     var albumData = JSON.stringify({'saved': new Date().getTime(), data: albums, x:1 });
-    var artistData = JSON.stringify({'saved': new Date().getTime(), data: artists, y:1 });
-    //log(artistData, 'SAVING');
-
+    
     localStorage.setItem('albumData', albumData);
-    localStorage.setItem('artistData', artistData);
   }
 
-  var neededRecommendations = 0;
+  var neededOptions = 0;
   var missedAlbums = { };
-  function createRecommendations() {
-    loadState(true, 'getting more recommendations...');
-    neededRecommendations += 5; 
-    var timeAgo = new Date(new Date().getTime() - 30 * 6 * 24 * 60 * 60 * 1000).toISOString();
-
-    var artistsTimeAgo = _.filter(artists, function(artist) {
-      return artist.mostRecentSave.localeCompare(timeAgo) < 0;
-    });
-
-    artistsTimeAgo.sort(function() {
-      return Math.random() - Math.random();
-    });
+  function createOptions() {
+    if(albumsArr.length == 0) {
+      albumsArr = Object.values(albums);
+      albumsArr.sort(function() {
+        return Math.random() - Math.random();
+      });       
+    }
+    loadState(true, 'getting more options...');
+    neededOptions += 10; 
 
     function next() {
-      var artist = artistsTimeAgo.pop();
-      if(!artist) { log('Done recommending'); return; }
-
-      spotifyApi.getArtistAlbums(artist.id, { limit: 5 },
-        function(err, data) {
-          if(err) {
-            log(err);
-            throw new Error(err);
-          }
-
-          var newer = _.filter(data.items, function(album) {
-            return !albums[album.id] && album.total_tracks > 3 && album.album_type !== 'compilation' && album.album_type !== 'single'
-              && album.release_date.localeCompare(timeAgo) > 0
-              && album.name.indexOf('Remaster') < 0 && album.name.indexOf('Extended') < 0
-              && album.name.indexOf('Deluxe') < 0 && album.name.indexOf('Live') < 0
-              && album.name.indexOf('Edition') < 0
-              && album.name.indexOf('19') < 0 && album.name.indexOf('20') < 0
-              && album.name.indexOf('Christmas') < 0 && album.name.indexOf('Holiday') < 0
-              && !missedAlbums[album.id]
-              ;
-          });
-
-          if(newer.length > 0) {
-            var album = newer[Math.floor(Math.random() * newer.length)];
-            
-            render(album);
-            missedAlbums[album.id] = album;
-            neededRecommendations--;
-          }
-
-          if(neededRecommendations > 0) { 
-            return next();
-          } else {
-            loadState(false);
-          }
-        }
-      );
+      var album = albumsArr.pop();
+      if(!album) { log('Done recommending'); return; }
+      render(album);
+      neededOptions--;
+      if(neededOptions > 0) next();
     }
 
-    next()
+    next();
   }
 
 
   $('#loadContainer').on('click', function() {
-    loadState(true, 'getting more recommendations...');
-    createRecommendations();
+    loadState(true, 'getting more options...');
+    createOptions();
   });
 
   function render(album) {
+    log(album)
     $('#loadContainer').removeClass('initial');
-    album.image = album.images[0].url;
+    album.image = (album.image.url ? album.image.url : album.images[0].url);
     album.artistNames = album.artists.map(function(a) { return a.name; }).join(', ');
     $(templates.album(album)).insertBefore('#loadContainer');
 
     $('[data-album-id="' + album.id + '"]').on('click', function(ele) {
       $('.heart', this).html('♥️').addClass('hearted');
-      spotifyApi.addToMySavedAlbums([album.id]);
-      addAlbum(missedAlbums[album.id], new Date().toISOString());
-      save();
+      //spotifyApi.addToMySavedAlbums([album.id]);
+      alert('play it!');
     });
 
   }

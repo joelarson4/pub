@@ -330,7 +330,7 @@ var SpotifyWebApi = (function () {
     var requestData = {
       url: _baseUri + '/me/albums',
       type: 'PUT',
-      postData: albumIds
+      postData: {ids:albumIds}
     };
     return _checkParamsAndPerformRequest(requestData, options, callback);
   };
